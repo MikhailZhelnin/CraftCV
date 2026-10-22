@@ -1,0 +1,73 @@
+@page {
+    size: A4 portrait;
+    margin: 15mm;
+}
+
+@media print {
+
+    html,
+    body {
+        width: auto !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: visible !important;
+        background: #ffffff !important;
+    }
+
+    .cv-print-root {
+        position: static !important;
+
+        inset: auto !important;
+
+        width: auto !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        transform: none !important;
+
+        box-shadow: none !important;
+        outline: none !important;
+        border: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    .cv-document {
+        width: auto !important;
+        min-height: 0 !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #ffffff !important;
+
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .cv-section {
+        break-inside: auto;
+    }
+
+    .cv-section-heading {
+        break-after: avoid-page;
+    }
+
+    .cv-entry {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .cv-document p {
+        orphans: 2;
+        widows: 2;
+    }
+
+    .cv-document a {
+        text-decoration: underline;
+    }
+}
