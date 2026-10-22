@@ -3,12 +3,12 @@ import { Copy } from "lucide-react"
 
 const AppHeader = () => {
     return (
-        <header className="py-6 border-b ">
+        <header className="z-20 shrink-0 border-b bg-background py-4">
             <div className="t-container">
                 <div className="flex justify-between items-center">
                     <div className="flex items-center">
                         <Copy className="mr-2"/>
-                        <span>CV-Builder</span>
+                        <span>CraftCV</span>
                     </div>
 
                     <nav className="flex items-center">

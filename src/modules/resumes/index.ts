@@ -11,3 +11,4 @@ export { useResumesStore } from "./model/resumes.store";
 export { ResumeSectionSettings } from "./ui/ResumeSectionSettings";
 export { ResumePreview } from "./ui/preview/ResumePreview";
 export { ResumeTemplateSelector } from "./ui/ResumeTemplateSelector";
+export { ResumeSectionActions } from "./ui/ResumeSectionActions";

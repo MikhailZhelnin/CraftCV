@@ -4,10 +4,10 @@ import AppHeader from './ui/AppHeader';
 
 const MainLayout = () => {
     return (
-        <div>
+        <div className="flex h-dvh flex-col overflow-hidden">
             <AppHeader />
-            
-            <main>
+
+            <main className="min-h-0 flex-1 overflow-y-auto">
                 <Outlet />
             </main>
         </div>

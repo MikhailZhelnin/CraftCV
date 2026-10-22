@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Controller, useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/shared/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction } from "@/shared/ui/card";
 
 import { PersonalDetailsFields } from "../PersonalDetailsFields";
 import { SummaryFields } from "../SummaryFields";
@@ -28,9 +28,10 @@ type CareerDataFormValues = {
 interface CareerDataSectionsProps {
     order?: readonly CareerSectionId[];
     hiddenIds?: readonly CareerSectionId[];
+    renderSectionActions?: (id: CareerSectionId) => ReactNode;
 };
 
-export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] }: CareerDataSectionsProps) {
+export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [], renderSectionActions }: CareerDataSectionsProps) {
     const { control, formState: { errors, submitCount } } = useFormContext<CareerDataFormValues>();
 
     const { fields: experienceFields, append: appendExperience, remove: removeExperience, move: moveExperience } = useFieldArray({ control, name: "careerData.experience" });
@@ -55,6 +56,11 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                 <CardHeader>
                     <CardTitle>Personal Details</CardTitle>
                     <CardDescription>Contact details used in your resumes.</CardDescription>
+                    {renderSectionActions && (
+                        <CardAction>
+                            {renderSectionActions("personal")}
+                        </CardAction>
+                    )}
                 </CardHeader>
 
                 <CardContent>
@@ -78,6 +84,11 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                 <CardHeader>
                     <CardTitle>Professional Summary</CardTitle>
                     <CardDescription>Write a short professional introduction.</CardDescription>
+                    {renderSectionActions && (
+                        <CardAction>
+                            {renderSectionActions("summary")}
+                        </CardAction>
+                    )}
                 </CardHeader>
 
                 <CardContent>
@@ -104,6 +115,7 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                 emptyMessage="No work experience added yet."
                 count={experienceFields.length}
                 maxItems={20}
+                headerActions={renderSectionActions?.("experience")}
                 onAdd={() => appendExperience(createEmptyExperience())}
             >
                 {experienceFields.map((item, index) => (
@@ -149,6 +161,7 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                 emptyMessage="No education added yet."
                 count={educationFields.length}
                 maxItems={20}
+                headerActions={renderSectionActions?.("education")}
                 onAdd={() => appendEducation(createEmptyEducation())}
             >
                 {educationFields.map((item, index) => (
@@ -192,6 +205,11 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                 <CardHeader>
                     <CardTitle>Skills</CardTitle>
                     <CardDescription>Add your professional skills.</CardDescription>
+                    {renderSectionActions && (
+                        <CardAction>
+                            {renderSectionActions("skills")}
+                        </CardAction>
+                    )}
                 </CardHeader>
 
                 <CardContent>
@@ -218,6 +236,7 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                 emptyMessage="No projects added yet."
                 count={projectFields.length}
                 maxItems={20}
+                headerActions={renderSectionActions?.("projects")}
                 onAdd={() => appendProject(createEmptyProject())}
             >
                 {projectFields.map((item, index) => (
@@ -266,6 +285,7 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                 emptyMessage="No languages added yet."
                 count={languageFields.length}
                 maxItems={12}
+                headerActions={renderSectionActions?.("languages")}
                 onAdd={() => appendLanguage(createEmptyLanguage())}
             >
                 {languageFields.map((item, index) => (
