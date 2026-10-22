@@ -6,6 +6,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/sha
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Field, FieldLabel, FieldError } from "@/shared/ui/field";
+import { useUnsavedChangesGuard } from "@/shared/hooks/useUnsavedChangesGuard";
+import { UnsavedChangesDialog } from "@/shared/components/UnsavedChangesDialog";
 
 import { CareerDataSections, CareerSectionNavigator, findFirstInvalidCareerSection, scrollToCareerSection } from "@/modules/career-data";
 import { useResumesStore, resumeDraftSchema, createDefaultResumeSections, ResumeSectionSettings, type Resume, type ResumeDraft, ResumeTemplateSelector, DEFAULT_RESUME_TEMPLATE } from "@/modules/resumes";
@@ -53,7 +55,9 @@ function ResumeEditorForm({ resume }: ResumeEditorFormProps) {
         },
     });
 
-    const { register, control, handleSubmit, formState: { errors, isSubmitting } } = methods;
+    const { register, control, handleSubmit, formState: { errors, isDirty, isSubmitting } } = methods;
+
+    const navigationGuard = useUnsavedChangesGuard(isDirty);
 
     const sections = useWatch({ control, name: "sections" }) ?? [];
 
@@ -65,7 +69,6 @@ function ResumeEditorForm({ resume }: ResumeEditorFormProps) {
         updateResume(resume.id, data);
         navigate("/");
     };
-
 
     const onInvalid: SubmitErrorHandler<ResumeDraft> = (formErrors) => {
         if (formErrors.title) {
@@ -87,98 +90,108 @@ function ResumeEditorForm({ resume }: ResumeEditorFormProps) {
 
     return (
         <FormProvider {...methods}>
-            <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit, onInvalid)}>
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-bold">Edit Resume</h1>
-                        <p className="text-muted-foreground">{resume.title}</p>
-                    </div>
+            <UnsavedChangesDialog
+                open={navigationGuard.isBlocked}
+                onStay={navigationGuard.stay}
+                onLeave={navigationGuard.leave}
+            />
 
-                    <div className="flex gap-3">
-                        <Button type="button" variant="outline" onClick={() => navigate("/")}>
-                            Cancel
-                        </Button>
+            <div className="py-4">
+                <div className="t-container">
+                    <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit, onInvalid)}>
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                            <div>
+                                <h1 className="text-3xl font-bold">Edit Resume</h1>
+                                <p className="text-muted-foreground">{resume.title}</p>
+                            </div>
 
-                        <Button type="submit" disabled={isSubmitting}>
-                            Save Changes
-                        </Button>
-                    </div>
-                </div>
+                            <div className="flex gap-3">
+                                <Button type="button" variant="outline" onClick={() => navigate("/")}>
+                                    Cancel
+                                </Button>
 
-                <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                    <div className="min-w-0 space-y-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Resume Information</CardTitle>
-                                <CardDescription>
-                                    Set the name and target position
-                                    of this resume.
-                                </CardDescription>
-                            </CardHeader>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    Save Changes
+                                </Button>
+                            </div>
+                        </div>
 
-                            <CardContent className="grid gap-4 sm:grid-cols-2">
-                                <Field data-invalid={!!errors.title}>
-                                    <FieldLabel htmlFor="resume-title">Resume Title</FieldLabel>
+                        <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                            <div className="min-w-0 space-y-6">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Resume Information</CardTitle>
+                                        <CardDescription>
+                                            Set the name and target position
+                                            of this resume.
+                                        </CardDescription>
+                                    </CardHeader>
 
-                                    <Input id="resume-title" {...register("title")} aria-invalid={!!errors.title} />
+                                    <CardContent className="grid gap-4 sm:grid-cols-2">
+                                        <Field data-invalid={!!errors.title}>
+                                            <FieldLabel htmlFor="resume-title">Resume Title</FieldLabel>
 
-                                    {errors.title?.message && (
-                                        <FieldError>{errors.title.message}</FieldError>
-                                    )}
-                                </Field>
+                                            <Input id="resume-title" {...register("title")} aria-invalid={!!errors.title} />
 
-                                <Field data-invalid={!!errors.targetRole}>
-                                    <FieldLabel htmlFor="resume-role">Target Role</FieldLabel>
+                                            {errors.title?.message && (
+                                                <FieldError>{errors.title.message}</FieldError>
+                                            )}
+                                        </Field>
 
-                                    <Input id="resume-role" {...register("targetRole")} aria-invalid={!!errors.targetRole} />
+                                        <Field data-invalid={!!errors.targetRole}>
+                                            <FieldLabel htmlFor="resume-role">Target Role</FieldLabel>
 
-                                    {errors.targetRole?.message && (
-                                        <FieldError> {errors.targetRole.message}</FieldError>
-                                    )}
-                                </Field>
-                            </CardContent>
-                        </Card>
+                                            <Input id="resume-role" {...register("targetRole")} aria-invalid={!!errors.targetRole} />
 
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Resume Template</CardTitle>
-                                <CardDescription>
-                                    Choose the visual style of your resume.
-                                    You can change it without losing your data.
-                                </CardDescription>
-                            </CardHeader>
+                                            {errors.targetRole?.message && (
+                                                <FieldError> {errors.targetRole.message}</FieldError>
+                                            )}
+                                        </Field>
+                                    </CardContent>
+                                </Card>
 
-                            <CardContent>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Resume Template</CardTitle>
+                                        <CardDescription>
+                                            Choose the visual style of your resume.
+                                            You can change it without losing your data.
+                                        </CardDescription>
+                                    </CardHeader>
+
+                                    <CardContent>
+                                        <Controller
+                                            control={control}
+                                            name="templateId"
+                                            render={({ field }) => (
+                                                <ResumeTemplateSelector value={field.value} onChange={field.onChange} />
+                                            )}
+                                        />
+                                    </CardContent>
+                                </Card>
+
                                 <Controller
                                     control={control}
-                                    name="templateId"
+                                    name="sections"
                                     render={({ field }) => (
-                                        <ResumeTemplateSelector value={field.value} onChange={field.onChange} />
+                                        <ResumeSectionSettings value={field.value} onChange={field.onChange} />
                                     )}
                                 />
-                            </CardContent>
-                        </Card>
 
-                        <Controller
-                            control={control}
-                            name="sections"
-                            render={({ field }) => (
-                                <ResumeSectionSettings value={field.value} onChange={field.onChange} />
-                            )}
-                        />
+                                <CareerSectionNavigator order={sectionOrder} errors={errors} />
 
-                        <CareerSectionNavigator order={sectionOrder} errors={errors} />
+                                <CareerDataSections order={sectionOrder} hiddenIds={hiddenIds} />
+                            </div>
 
-                        <CareerDataSections order={sectionOrder} hiddenIds={hiddenIds} />
-                    </div>
-
-                    <aside className="min-w-0 xl:sticky xl:top-6 xl:self-start">
-                        <div className="xl:max-h-[calc(100vh-3rem)] xl:overflow-y-auto xl:pr-2">
-                            <ResumeLivePreview />
+                            <aside className="min-w-0 xl:sticky xl:top-6 xl:self-start">
+                                <div className="xl:max-h-[calc(100vh-3rem)] xl:overflow-y-auto xl:pr-2">
+                                    <ResumeLivePreview />
+                                </div>
+                            </aside>
                         </div>
-                    </aside>
+                    </form>
                 </div>
-            </form>
+            </div>
         </FormProvider>
     );
 };

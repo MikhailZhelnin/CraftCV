@@ -31,6 +31,8 @@ export function ResumePreview({ data, targetRole, sections, templateId, fileName
     const [availableWidth, setAvailableWidth] = useState(PAPER_WIDTH);
     const [paperHeight, setPaperHeight] = useState(PAPER_HEIGHT);
 
+    const [printError, setPrintError] = useState<string | null>(null);
+
     useEffect(() => {
         const container = containerRef.current;
         const paper = paperRef.current;
@@ -54,7 +56,15 @@ export function ResumePreview({ data, targetRole, sections, templateId, fileName
 
     const documentTitle = fileName.replace(/[\\/:*?"<>|]/g, "-").trim() || "CraftCV-Resume";
 
-    const handlePrint = useReactToPrint({ contentRef: paperRef, documentTitle });
+    const handlePrint = useReactToPrint({
+        contentRef: paperRef,
+        documentTitle,
+
+        onPrintError: (location, error) => {
+            console.error("Resume print error:", location, error);
+            setPrintError("Could not prepare the PDF. " + "Please try again.");
+        },
+    });
 
     const scale = Math.min(1, availableWidth / PAPER_WIDTH);
 
@@ -69,18 +79,25 @@ export function ResumePreview({ data, targetRole, sections, templateId, fileName
             className="w-full min-w-0 space-y-3"
         >
             <div className="flex items-center justify-between gap-3">
-                <p className="text-xs text-muted-foreground">A4 · Classic print layout</p>
+                <p className="text-xs text-muted-foreground">A4 · {templateId === "modern" ? "Modern" : "Classic"} print layout</p>
 
                 <Button
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => void handlePrint()}
+                    onClick={() => {
+                        setPrintError(null);
+                        void handlePrint();
+                    }}
                 >
                     <Printer className="size-4" />
                     Print / Save PDF
                 </Button>
             </div>
+
+            {printError && (
+                <p role="alert" className="text-sm text-destructive">{printError}</p>
+            )}
 
             {hasLongContent && (
                 <p className="rounded-lg border p-3 text-xs text-muted-foreground">
