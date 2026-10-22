@@ -12,8 +12,8 @@ interface RepeatableSectionProps {
     emptyMessage: string;
     count: number;
     maxItems: number;
-    onAdd: () => void;
     children: ReactNode;
+    onAdd: () => void;
 };
 
 export function RepeatableSection({ title, description, addLabel, emptyMessage, count, maxItems, children, onAdd }: RepeatableSectionProps) {
@@ -55,14 +55,20 @@ interface RepeatableItemProps {
     index: number;
     total: number;
     children: ReactNode;
+    isOpen: boolean;
     onMoveUp: () => void;
     onMoveDown: () => void;
     onRemove: () => void;
+    onOpenChange: (open: boolean) => void;
 };
 
-export function RepeatableItem({ title, subtitle, index, total, children, onMoveUp, onMoveDown, onRemove }: RepeatableItemProps) {
+export function RepeatableItem({ title, subtitle, index, total, children, isOpen, onMoveUp, onMoveDown, onRemove, onOpenChange }: RepeatableItemProps) {
     return (
-        <Accordion defaultValue={["details"]}>
+        <Accordion
+            value={isOpen ? ["details"] : []}
+            onValueChange={(value) => onOpenChange(value.includes("details"))}
+            defaultValue={["details"]}
+        >
             <AccordionItem value="details" className="rounded-lg border px-4">
                 <AccordionTrigger className="py-4 hover:no-underline">
                     <div className="text-left">

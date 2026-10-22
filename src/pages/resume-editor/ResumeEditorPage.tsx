@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { Controller, FormProvider, useForm, useWatch } from "react-hook-form";
+import { Controller, FormProvider, useForm, useWatch, type SubmitErrorHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/shared/ui/card";
@@ -7,7 +7,7 @@ import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Field, FieldLabel, FieldError } from "@/shared/ui/field";
 
-import { CareerDataSections } from "@/modules/career-data";
+import { CareerDataSections, CareerSectionNavigator, findFirstInvalidCareerSection, scrollToCareerSection } from "@/modules/career-data";
 import { useResumesStore, resumeDraftSchema, createDefaultResumeSections, ResumeSectionSettings, type Resume, type ResumeDraft, ResumeTemplateSelector, DEFAULT_RESUME_TEMPLATE } from "@/modules/resumes";
 
 import { ResumeLivePreview } from "./ui/ResumeLivePreview";
@@ -42,6 +42,7 @@ function ResumeEditorForm({ resume }: ResumeEditorFormProps) {
 
     const methods = useForm<ResumeDraft>({
         resolver: zodResolver(resumeDraftSchema),
+        shouldFocusError: false,
 
         defaultValues: {
             title: resume.title,
@@ -65,9 +66,28 @@ function ResumeEditorForm({ resume }: ResumeEditorFormProps) {
         navigate("/");
     };
 
+
+    const onInvalid: SubmitErrorHandler<ResumeDraft> = (formErrors) => {
+        if (formErrors.title) {
+            methods.setFocus("title");
+            return;
+        };
+
+        if (formErrors.targetRole) {
+            methods.setFocus("targetRole");
+            return;
+        };
+
+        const firstInvalidSection = findFirstInvalidCareerSection(formErrors, sectionOrder);
+
+        if (!firstInvalidSection) return;
+
+        scrollToCareerSection(firstInvalidSection);
+    };
+
     return (
         <FormProvider {...methods}>
-            <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-bold">Edit Resume</h1>
@@ -146,6 +166,8 @@ function ResumeEditorForm({ resume }: ResumeEditorFormProps) {
                                 <ResumeSectionSettings value={field.value} onChange={field.onChange} />
                             )}
                         />
+
+                        <CareerSectionNavigator order={sectionOrder} errors={errors} />
 
                         <CareerDataSections order={sectionOrder} hiddenIds={hiddenIds} />
                     </div>

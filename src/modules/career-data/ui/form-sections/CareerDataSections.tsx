@@ -14,10 +14,12 @@ import { LanguageFields } from "../LanguageFields";
 import { RepeatableSection, RepeatableItem } from "./RepeatableSection";
 
 import { createEmptyExperience, createEmptyEducation, createEmptyProject, createEmptyLanguage } from "../../model/career.defaults";
-
 import { CAREER_SECTION_IDS, type CareerSectionId } from "../../model/career.sections";
-
 import type { CareerData } from "../../model/career.types";
+
+import { useAutoExpandInvalidItems } from "../../hooks/useAutoExpandInvalidItems";
+
+import { getCareerSectionDomId } from "../../lib/sectionNavigation";
 
 type CareerDataFormValues = {
     careerData: CareerData;
@@ -29,12 +31,18 @@ interface CareerDataSectionsProps {
 };
 
 export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] }: CareerDataSectionsProps) {
-    const { control, formState: { errors } } = useFormContext<CareerDataFormValues>();
+    const { control, formState: { errors, submitCount } } = useFormContext<CareerDataFormValues>();
 
     const { fields: experienceFields, append: appendExperience, remove: removeExperience, move: moveExperience } = useFieldArray({ control, name: "careerData.experience" });
     const { fields: educationFields, append: appendEducation, remove: removeEducation, move: moveEducation } = useFieldArray({ control, name: "careerData.education" });
     const { fields: projectFields, append: appendProject, remove: removeProject, move: moveProject } = useFieldArray({ control, name: "careerData.projects" });
     const { fields: languageFields, append: appendLanguage, remove: removeLanguage, move: moveLanguage } = useFieldArray({ control, name: "careerData.languages" });
+
+
+    const experienceAccordion = useAutoExpandInvalidItems({ fields: experienceFields, sectionErrors: errors.careerData?.experience, submitCount });
+    const educationAccordion = useAutoExpandInvalidItems({ fields: educationFields, sectionErrors: errors.careerData?.education, submitCount });
+    const projectsAccordion = useAutoExpandInvalidItems({ fields: projectFields, sectionErrors: errors.careerData?.projects, submitCount });
+    const languagesAccordion = useAutoExpandInvalidItems({ fields: languageFields, sectionErrors: errors.careerData?.languages, submitCount });
 
     const experienceValues = useWatch({ control, name: "careerData.experience" }) ?? [];
     const educationValues = useWatch({ control, name: "careerData.education" }) ?? [];
@@ -108,6 +116,8 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                         onMoveUp={() => moveExperience(index, index - 1)}
                         onMoveDown={() => moveExperience(index, index + 1)}
                         onRemove={() => removeExperience(index)}
+                        isOpen={experienceAccordion.isOpen(item.id)}
+                        onOpenChange={(open) => experienceAccordion.setItemOpen(item.id, open)}
                     >
                         <Controller
                             name={`careerData.experience.${index}`}
@@ -151,6 +161,8 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                         onMoveUp={() => moveEducation(index, index - 1)}
                         onMoveDown={() => moveEducation(index, index + 1)}
                         onRemove={() => removeEducation(index)}
+                        isOpen={educationAccordion.isOpen(item.id)}
+                        onOpenChange={(open) => educationAccordion.setItemOpen(item.id, open)}
                     >
                         <Controller
                             name={`careerData.education.${index}`}
@@ -218,6 +230,8 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                         onMoveUp={() => moveProject(index, index - 1)}
                         onMoveDown={() => moveProject(index, index + 1)}
                         onRemove={() => removeProject(index)}
+                        isOpen={projectsAccordion.isOpen(item.id)}
+                        onOpenChange={(open) => projectsAccordion.setItemOpen(item.id, open)}
                     >
                         <Controller
                             name={`careerData.projects.${index}`}
@@ -264,6 +278,8 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
                         onMoveUp={() => moveLanguage(index, index - 1)}
                         onMoveDown={() => moveLanguage(index, index + 1)}
                         onRemove={() => removeLanguage(index)}
+                        isOpen={languagesAccordion.isOpen(item.id)}
+                        onOpenChange={(open) => languagesAccordion.setItemOpen(item.id, open)}
                     >
                         <Controller
                             name={`careerData.languages.${index}`}
@@ -288,7 +304,7 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [] 
     return (
         <div className="space-y-6">
             {order.map((sectionId) => (
-                <div key={sectionId} className="space-y-2">
+                <div key={sectionId} id={getCareerSectionDomId(sectionId)} className="scroll-mt-24 space-y-2">
                     {hiddenIds.includes(sectionId) && (
                         <p className="text-xs text-muted-foreground">Hidden in exported resume</p>
                     )}

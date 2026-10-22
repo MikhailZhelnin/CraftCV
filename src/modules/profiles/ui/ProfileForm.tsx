@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, type SubmitErrorHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/shared/ui/card";
@@ -8,7 +8,7 @@ import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { Field, FieldLabel, FieldError } from "@/shared/ui/field";
 
-import { createEmptyCareerData, CareerDataSections } from "@/modules/career-data";
+import { createEmptyCareerData, CareerDataSections, CareerSectionNavigator, CAREER_SECTION_IDS, findFirstInvalidCareerSection, scrollToCareerSection } from "@/modules/career-data";
 
 import type { ProfileDraft } from "../model/profile.types";
 import { profileFormSchema } from "../model/profile.schema";
@@ -22,6 +22,7 @@ interface ProfileFormProps {
 export function ProfileForm({ initialValues, onSubmit, onCancel }: ProfileFormProps) {
     const methods = useForm<ProfileDraft>({
         resolver: zodResolver(profileFormSchema),
+        shouldFocusError: false,
 
         defaultValues: initialValues ?? {
             name: "",
@@ -32,9 +33,28 @@ export function ProfileForm({ initialValues, onSubmit, onCancel }: ProfileFormPr
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = methods;
 
+
+    const onInvalid: SubmitErrorHandler<ProfileDraft> = (formErrors) => {
+        if (formErrors.name) {
+            methods.setFocus("name");
+            return;
+        };
+
+        if (formErrors.description) {
+            methods.setFocus("description");
+            return;
+        };
+
+        const firstInvalidSection = findFirstInvalidCareerSection(formErrors, CAREER_SECTION_IDS);
+
+        if (firstInvalidSection) {
+            scrollToCareerSection(firstInvalidSection);
+        };
+    };
+
     return (
         <FormProvider {...methods}>
-            <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Card>
                     <CardHeader>
                         <CardTitle>Profile Information</CardTitle>
@@ -74,6 +94,8 @@ export function ProfileForm({ initialValues, onSubmit, onCancel }: ProfileFormPr
                     </CardContent>
                 </Card>
 
+                <CareerSectionNavigator order={CAREER_SECTION_IDS} errors={errors} />
+
                 <CareerDataSections />
 
                 <div className="flex justify-end gap-3">
@@ -88,4 +110,4 @@ export function ProfileForm({ initialValues, onSubmit, onCancel }: ProfileFormPr
             </form>
         </FormProvider>
     );
-}
+};
