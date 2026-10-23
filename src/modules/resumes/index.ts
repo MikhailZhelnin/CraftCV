@@ -9,7 +9,7 @@ export { resumeMetadataSchema, resumeDraftSchema } from "./model/resume.schema";
 export { useResumesStore } from "./model/resumes.store";
 
 export { ResumeSectionSettings } from "./ui/ResumeSectionSettings";
-export { ResumePreview } from "./ui/preview/ResumePreview";
+export { ResumePreview, type ResumePreviewHandle } from "./ui/preview/ResumePreview";
 export { ResumeTemplateSelector } from "./ui/ResumeTemplateSelector";
 export { ResumeSectionActions } from "./ui/ResumeSectionActions";
 export { ResumeCard } from "./ui/ResumeCard";

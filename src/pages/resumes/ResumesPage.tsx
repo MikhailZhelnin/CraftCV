@@ -69,9 +69,9 @@ const ResumesPage = () => {
 
     return (
         <div className="min-h-full bg-background lg:h-full lg:min-h-0 lg:overflow-hidden">
-            <div className="t-container lg:h-full lg:min-h-0">
+            <div className="px-4 lg:h-full lg:min-h-0">
                 <div className="grid lg:h-full lg:min-h-0 lg:grid-cols-[minmax(0,28%)_minmax(0,1fr)]">
-                    <aside className="relative flex min-h-88 flex-col overflow-hidden border-b border-border py-8 lg:h-full lg:min-h-0 lg:border-r lg:border-b-0 lg:pr-7">
+                    <aside className="@container relative flex min-h-88 flex-col overflow-hidden border-b border-border py-8 lg:h-full lg:min-h-0 lg:border-r lg:border-b-0 lg:pr-7">
                         <div className="relative z-10">
                             <span className="inline-flex mb-4 text-sm font-semibold uppercase">01 — Your Resumes</span>
 
@@ -106,10 +106,16 @@ const ResumesPage = () => {
                             </p>
                         </div>
 
-                        <span aria-hidden="true" className="pointer-events-none absolute right-4 bottom-1.25 font-display text-[clamp(9rem,18vw,17rem)] leading-[0.8] text-foreground/6">01</span>
+                        <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute right-3 bottom-1 font-display leading-[0.8] text-foreground/6"
+                            style={{ fontSize: "clamp(4rem, calc(80cqw - 6rem), 24rem)" }}
+                        >
+                            01
+                        </span>
                     </aside>
 
-                    <section className="min-w-0 pt-4 lg:flex lg:h-full lg:min-h-0 lg:flex-col lg:overflow-hidden lg:pl-5 lg:pr-2">
+                    <section className="min-w-0 pt-4 lg:flex lg:h-full lg:min-h-0 lg:flex-col lg:overflow-hidden lg:pl-5">
                         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4 lg:shrink-0">
                             <div className="flex items-center gap-1">
                                 <Button
@@ -172,7 +178,7 @@ const ResumesPage = () => {
                         </div>
 
                         <ScrollArea className="w-full lg:min-h-0 lg:flex-1">
-                            <div className="grid auto-rows-fr grid-cols-1 gap-3 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mb-4">
+                            <div className="grid auto-rows-fr grid-cols-1 gap-4 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mb-4">
                                 {visibleResumes.map((resume) => (
                                     <ResumeCard
                                         key={resume.id}

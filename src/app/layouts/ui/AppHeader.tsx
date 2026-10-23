@@ -36,49 +36,47 @@ const AppHeader = () => {
     }, [activeIndex]);
 
     return (
-        <header className="z-20 shrink-0 border-b bg-background py-4">
-            <div className="t-container">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                        <NavLink
-                            to="/"
-                            aria-label="CraftCV home"
-                            className="mr-20 shrink-0 text-3xl font-black tracking-[-0.07em] text-foreground"
-                        >
-                            craftcv.
-                        </NavLink>
+        <header className="z-20 shrink-0 border-b bg-background p-4">
+            <div className="flex justify-between items-center">
+                <div className="flex items-center">
+                    <NavLink
+                        to="/"
+                        aria-label="CraftCV home"
+                        className="mr-21.25 shrink-0 text-3xl font-black tracking-[-0.07em] text-foreground"
+                    >
+                        craftcv.
+                    </NavLink>
 
-                        <nav
-                            ref={navRef}
-                            className="relative flex h-full items-center gap-6"
-                            aria-label="Main navigation"
-                        >
-                            {NAV_LINKS.map(({ to, label, end }, index) => (
-                                <NavLink
-                                    key={to}
-                                    ref={(element) => {
-                                        linkRefs.current[index] = element;
-                                    }}
-                                    to={to}
-                                    end={end}
-                                    className={({ isActive }) =>
-                                        `flex h-full items-center text-[11px] font-semibold uppercase tracking-wide transition-colors ${isActive
-                                            ? "text-foreground"
-                                            : "text-muted-foreground hover:text-foreground"
-                                        }`
-                                    }
-                                >
-                                    {label}
-                                </NavLink>
-                            ))}
+                    <nav
+                        ref={navRef}
+                        className="relative flex h-full items-center gap-6"
+                        aria-label="Main navigation"
+                    >
+                        {NAV_LINKS.map(({ to, label, end }, index) => (
+                            <NavLink
+                                key={to}
+                                ref={(element) => {
+                                    linkRefs.current[index] = element;
+                                }}
+                                to={to}
+                                end={end}
+                                className={({ isActive }) =>
+                                    `flex h-full items-center text-[11px] font-semibold uppercase tracking-wide transition-colors ${isActive
+                                        ? "text-foreground"
+                                        : "text-muted-foreground hover:text-foreground"
+                                    }`
+                                }
+                            >
+                                {label}
+                            </NavLink>
+                        ))}
 
-                            <span
-                                aria-hidden="true"
-                                className="pointer-events-none absolute -bottom-6.5 h-0.5 bg-primary transition-[transform,width] duration-300 ease-out"
-                                style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
-                            />
-                        </nav>
-                    </div>
+                        <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute -bottom-6.5 h-0.5 bg-primary transition-[transform,width] duration-300 ease-out"
+                            style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
+                        />
+                    </nav>
                 </div>
             </div>
         </header>

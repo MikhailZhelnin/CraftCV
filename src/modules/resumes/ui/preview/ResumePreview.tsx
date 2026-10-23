@@ -1,8 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import { useReactToPrint } from "react-to-print";
-import { Printer } from "lucide-react";
-
-import { Button } from "@/shared/ui/button";
 
 import type { CareerData } from "@/modules/career-data";
 
@@ -16,15 +13,20 @@ import "./resume-print.css";
 const PAPER_WIDTH = 794;
 const PAPER_HEIGHT = 1123;
 
+export interface ResumePreviewHandle {
+    print: () => void;
+};
+
 interface ResumePreviewProps {
     data: CareerData;
     targetRole: string;
     sections: ResumeSectionSetting[];
     templateId: ResumeTemplateId;
     fileName?: string;
+    printRef?: Ref<ResumePreviewHandle>;
 };
 
-export function ResumePreview({ data, targetRole, sections, templateId, fileName = "CraftCV-Resume" }: ResumePreviewProps) {
+export function ResumePreview({ data, targetRole, sections, templateId, fileName = "CraftCV-Resume", printRef }: ResumePreviewProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const paperRef = useRef<HTMLDivElement>(null);
 
@@ -66,6 +68,17 @@ export function ResumePreview({ data, targetRole, sections, templateId, fileName
         },
     });
 
+    useImperativeHandle(
+        printRef,
+        () => ({
+            print: () => {
+                setPrintError(null);
+                void handlePrint();
+            },
+        }),
+        [handlePrint]
+    );
+
     const scale = Math.min(1, availableWidth / PAPER_WIDTH);
 
     const scaledWidth = PAPER_WIDTH * scale;
@@ -74,27 +87,7 @@ export function ResumePreview({ data, targetRole, sections, templateId, fileName
     const hasLongContent = paperHeight > PAPER_HEIGHT + 2;
 
     return (
-        <div
-            ref={containerRef}
-            className="w-full min-w-0 space-y-3"
-        >
-            <div className="flex items-center justify-between gap-3">
-                <p className="text-xs text-muted-foreground">A4 · {templateId === "modern" ? "Modern" : "Classic"} print layout</p>
-
-                <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                        setPrintError(null);
-                        void handlePrint();
-                    }}
-                >
-                    <Printer className="size-4" />
-                    Print / Save PDF
-                </Button>
-            </div>
-
+        <div ref={containerRef} className="mx-auto w-full max-w-130 min-w-0 space-y-3">
             {printError && (
                 <p role="alert" className="text-sm text-destructive">{printError}</p>
             )}

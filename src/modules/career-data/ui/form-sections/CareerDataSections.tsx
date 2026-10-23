@@ -28,17 +28,17 @@ type CareerDataFormValues = {
 interface CareerDataSectionsProps {
     order?: readonly CareerSectionId[];
     hiddenIds?: readonly CareerSectionId[];
+    activeSectionId?: CareerSectionId | null;
     renderSectionActions?: (id: CareerSectionId) => ReactNode;
 };
 
-export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [], renderSectionActions }: CareerDataSectionsProps) {
+export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [], activeSectionId, renderSectionActions }: CareerDataSectionsProps) {
     const { control, formState: { errors, submitCount } } = useFormContext<CareerDataFormValues>();
 
     const { fields: experienceFields, append: appendExperience, remove: removeExperience, move: moveExperience } = useFieldArray({ control, name: "careerData.experience" });
     const { fields: educationFields, append: appendEducation, remove: removeEducation, move: moveEducation } = useFieldArray({ control, name: "careerData.education" });
     const { fields: projectFields, append: appendProject, remove: removeProject, move: moveProject } = useFieldArray({ control, name: "careerData.projects" });
     const { fields: languageFields, append: appendLanguage, remove: removeLanguage, move: moveLanguage } = useFieldArray({ control, name: "careerData.languages" });
-
 
     const experienceAccordion = useAutoExpandInvalidItems({ fields: experienceFields, sectionErrors: errors.careerData?.experience, submitCount });
     const educationAccordion = useAutoExpandInvalidItems({ fields: educationFields, sectionErrors: errors.careerData?.education, submitCount });
@@ -321,14 +321,15 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [],
         ),
     };
 
+    const renderedSectionIds = activeSectionId === undefined ? order : activeSectionId === null ? [] : order.filter((id) => id === activeSectionId);
+
     return (
         <div className="space-y-6">
-            {order.map((sectionId) => (
+            {renderedSectionIds.map((sectionId) => (
                 <div key={sectionId} id={getCareerSectionDomId(sectionId)} className="scroll-mt-24 space-y-2">
                     {hiddenIds.includes(sectionId) && (
                         <p className="text-xs text-muted-foreground">Hidden in exported resume</p>
                     )}
-
                     {sections[sectionId]}
                 </div>
             ))}

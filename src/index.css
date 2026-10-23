@@ -166,6 +166,6 @@
 
   /* _____ Layout  _____ */
   .t-container {
-    @apply max-w-450 w-full mx-auto my-0 px-6;
+    @apply max-w-500 w-full mx-auto my-0 px-6;
   }
 }

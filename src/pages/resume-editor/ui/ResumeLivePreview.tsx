@@ -1,11 +1,13 @@
+import type { Ref } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { Eye } from "lucide-react";
 
-import { Badge } from "@/shared/ui/badge";
+import { ResumePreview, DEFAULT_RESUME_TEMPLATE, type ResumeDraft, type ResumePreviewHandle } from "@/modules/resumes";
 
-import { ResumePreview, type ResumeDraft, DEFAULT_RESUME_TEMPLATE } from "@/modules/resumes";
+interface ResumeLivePreviewProps {
+    printRef: Ref<ResumePreviewHandle>;
+};
 
-export function ResumeLivePreview() {
+export function ResumeLivePreview({ printRef }: ResumeLivePreviewProps) {
     const { control } = useFormContext<ResumeDraft>();
 
     const careerData = useWatch({ control, name: "careerData" });
@@ -14,29 +16,20 @@ export function ResumeLivePreview() {
     const templateId = useWatch({ control, name: "templateId" }) ?? DEFAULT_RESUME_TEMPLATE;
     const title = useWatch({ control, name: "title" });
 
-    if (!careerData || !sections) {
-        return null;
-    };
+    if (!careerData || !sections) return null;
 
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                    <Eye className="size-5" />
+                <h2 className="text-xs font-medium text-foreground">Live Preview</h2>
 
-                    <h2 className="text-lg font-semibold"> Live Preview</h2>
-                </div>
-
-                <Badge variant="secondary">A4</Badge>
+                <span className="text-xs text-muted-foreground">
+                    A4 · {templateId === "modern" ? "Modern" : "Classic"}
+                </span>
             </div>
 
-            <p className="text-sm text-muted-foreground">
-                Preview updates while you edit.
-                Changes are saved only when you click
-                Save Changes.
-            </p>
-
             <ResumePreview
+                printRef={printRef}
                 data={careerData}
                 targetRole={targetRole ?? ""}
                 sections={sections}
