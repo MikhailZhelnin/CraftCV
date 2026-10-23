@@ -13,6 +13,7 @@ import { useProfilesStore } from "@/modules/profiles";
 import { useResumesStore, resumeMetadataSchema, ResumeTemplateSelector, DEFAULT_RESUME_TEMPLATE, type ResumeTemplateId } from "@/modules/resumes";
 
 import { cn } from "cn";
+import { ScrollArea } from "@/shared/ui/scroll-area";
 
 type CreateStep = "details" | "template";
 
@@ -220,161 +221,163 @@ export function CreateResumeDialog({ open, onOpenChange }: CreateResumeDialogPro
                         </DialogHeader>
                     </div>
 
-                    <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pt-6 pb-7 sm:px-8">
-                        {step === "details" ? (
-                            <div className="space-y-5">
-                                <div className="space-y-2" role="group" aria-label="Start from">
-                                    <p className="text-xs font-semibold"> Start from</p>
+                    <ScrollArea className="min-h-0 min-w-0 flex-1">
+                        <div className="px-6 pt-6 pb-7 pr-8 sm:pl-8 sm:pr-10">
+                            {step === "details" ? (
+                                <div className="space-y-5">
+                                    <div className="space-y-2" role="group" aria-label="Start from">
+                                        <p className="text-xs font-semibold"> Start from</p>
 
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        aria-pressed={isBlank}
-                                        onClick={() => {
-                                            setSourceProfileId("blank");
-                                            setFormError("");
-                                        }}
-                                        className={sourceButtonClass}
-                                    >
-                                        <span className="flex size-9 shrink-0 items-center justify-center bg-muted">
-                                            <FileText className="size-4" />
-                                        </span>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            aria-pressed={isBlank}
+                                            onClick={() => {
+                                                setSourceProfileId("blank");
+                                                setFormError("");
+                                            }}
+                                            className={sourceButtonClass}
+                                        >
+                                            <span className="flex size-9 shrink-0 items-center justify-center bg-muted">
+                                                <FileText className="size-4" />
+                                            </span>
 
-                                        <span className="min-w-0 flex-1">
-                                            <span className="block text-xs font-semibold">Blank canvas</span>
-                                            <span className="mt-1 block text-[11px] font-normal text-muted-foreground">Start with a clean slate.</span>
-                                        </span>
+                                            <span className="min-w-0 flex-1">
+                                                <span className="block text-xs font-semibold">Blank canvas</span>
+                                                <span className="mt-1 block text-[11px] font-normal text-muted-foreground">Start with a clean slate.</span>
+                                            </span>
 
-                                        {isBlank ? (
-                                            <Check className="size-4 text-foreground" />
-                                        ) : (
-                                            <ArrowUpRight className="size-4 text-muted-foreground" />
+                                            {isBlank ? (
+                                                <Check className="size-4 text-foreground" />
+                                            ) : (
+                                                <ArrowUpRight className="size-4 text-muted-foreground" />
+                                            )}
+                                        </Button>
+
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            disabled={profiles.length === 0}
+                                            aria-pressed={!isBlank}
+                                            onClick={() => {
+                                                const firstProfile = profiles[0];
+                                                if (!firstProfile) return;
+
+                                                setSourceProfileId(firstProfile.id);
+                                                setFormError("");
+                                            }}
+                                            className={sourceButtonClass}
+                                        >
+                                            <span className="flex size-9 shrink-0 items-center justify-center bg-muted">
+                                                <UserRound className="size-4" />
+                                            </span>
+
+                                            <span className="min-w-0 flex-1">
+                                                <span className="block text-xs font-semibold">From existing profile</span>
+                                                <span className="mt-1 block text-[11px] font-normal text-muted-foreground">Reuse your saved career information.</span>
+                                            </span>
+
+                                            {!isBlank ? (
+                                                <Check className="size-4 text-foreground" />
+                                            ) : (
+                                                <ArrowUpRight className="size-4 text-muted-foreground" />
+                                            )}
+                                        </Button>
+
+                                        {profiles.length === 0 && (
+                                            <p className="text-xs text-muted-foreground">
+                                                No saved profiles yet. You can start
+                                                with a blank resume.
+                                            </p>
                                         )}
-                                    </Button>
+                                    </div>
 
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        disabled={profiles.length === 0}
-                                        aria-pressed={!isBlank}
-                                        onClick={() => {
-                                            const firstProfile = profiles[0];
-                                            if (!firstProfile) return;
+                                    {!isBlank && (
+                                        <Field className="gap-2">
+                                            <FieldLabel htmlFor="resume-source">Choose profile</FieldLabel>
 
-                                            setSourceProfileId(firstProfile.id);
-                                            setFormError("");
-                                        }}
-                                        className={sourceButtonClass}
-                                    >
-                                        <span className="flex size-9 shrink-0 items-center justify-center bg-muted">
-                                            <UserRound className="size-4" />
-                                        </span>
+                                            <Select
+                                                items={profileOptions}
+                                                value={sourceProfileId}
+                                                onValueChange={(value) => {
+                                                    if (typeof value === "string") {
+                                                        setSourceProfileId(value);
+                                                        setFormError("");
+                                                    }
+                                                }}
+                                            >
+                                                <SelectTrigger id="resume-source" className="w-full">
+                                                    <SelectValue />
+                                                </SelectTrigger>
 
-                                        <span className="min-w-0 flex-1">
-                                            <span className="block text-xs font-semibold">From existing profile</span>
-                                            <span className="mt-1 block text-[11px] font-normal text-muted-foreground">Reuse your saved career information.</span>
-                                        </span>
+                                                <SelectContent>
+                                                    {profileOptions.map((option) => (
+                                                        <SelectItem key={option.value} value={option.value}>
+                                                            {option.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </Field>
+                                    )}
 
-                                        {!isBlank ? (
-                                            <Check className="size-4 text-foreground" />
-                                        ) : (
-                                            <ArrowUpRight className="size-4 text-muted-foreground" />
+                                    <Field className="gap-2" data-invalid={!!titleError}>
+                                        <FieldLabel htmlFor="resume-title">Resume Title</FieldLabel>
+
+                                        <Input
+                                            id="resume-title"
+                                            value={title}
+                                            placeholder="Senior Frontend CV"
+                                            aria-invalid={!!titleError}
+                                            onChange={(event) => {
+                                                setTitle(event.target.value);
+                                                setTitleError("");
+                                            }}
+                                        />
+
+                                        {titleError && (
+                                            <FieldError>{titleError}</FieldError>
                                         )}
-                                    </Button>
+                                    </Field>
 
-                                    {profiles.length === 0 && (
-                                        <p className="text-xs text-muted-foreground">
-                                            No saved profiles yet. You can start
-                                            with a blank resume.
-                                        </p>
+                                    <Field className="gap-2" data-invalid={!!roleError}>
+                                        <FieldLabel htmlFor="resume-role">
+                                            Target Role
+                                            <span className="font-normal text-muted-foreground">(optional)</span>
+                                        </FieldLabel>
+
+                                        <Input
+                                            id="resume-role"
+                                            value={targetRole}
+                                            placeholder="Senior React Developer"
+                                            aria-invalid={!!roleError}
+                                            onChange={(event) => {
+                                                setTargetRole(event.target.value);
+                                                setRoleError("");
+                                            }}
+                                        />
+
+                                        {roleError && (
+                                            <FieldError>{roleError}</FieldError>
+                                        )}
+                                    </Field>
+
+                                    {formError && (
+                                        <p role="alert" className="text-sm text-destructive">{formError}</p>
                                     )}
                                 </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    <ResumeTemplateSelector value={templateId} onChange={setTemplateId} />
 
-                                {!isBlank && (
-                                    <Field className="gap-2">
-                                        <FieldLabel htmlFor="resume-source">Choose profile</FieldLabel>
-
-                                        <Select
-                                            items={profileOptions}
-                                            value={sourceProfileId}
-                                            onValueChange={(value) => {
-                                                if (typeof value === "string") {
-                                                    setSourceProfileId(value);
-                                                    setFormError("");
-                                                }
-                                            }}
-                                        >
-                                            <SelectTrigger id="resume-source" className="w-full">
-                                                <SelectValue />
-                                            </SelectTrigger>
-
-                                            <SelectContent>
-                                                {profileOptions.map((option) => (
-                                                    <SelectItem key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </Field>
-                                )}
-
-                                <Field className="gap-2" data-invalid={!!titleError}>
-                                    <FieldLabel htmlFor="resume-title">Resume Title</FieldLabel>
-
-                                    <Input
-                                        id="resume-title"
-                                        value={title}
-                                        placeholder="Senior Frontend CV"
-                                        aria-invalid={!!titleError}
-                                        onChange={(event) => {
-                                            setTitle(event.target.value);
-                                            setTitleError("");
-                                        }}
-                                    />
-
-                                    {titleError && (
-                                        <FieldError>{titleError}</FieldError>
-                                    )}
-                                </Field>
-
-                                <Field className="gap-2" data-invalid={!!roleError}>
-                                    <FieldLabel htmlFor="resume-role">
-                                        Target Role
-                                        <span className="font-normal text-muted-foreground">(optional)</span>
-                                    </FieldLabel>
-
-                                    <Input
-                                        id="resume-role"
-                                        value={targetRole}
-                                        placeholder="Senior React Developer"
-                                        aria-invalid={!!roleError}
-                                        onChange={(event) => {
-                                            setTargetRole(event.target.value);
-                                            setRoleError("");
-                                        }}
-                                    />
-
-                                    {roleError && (
-                                        <FieldError>{roleError}</FieldError>
-                                    )}
-                                </Field>
-
-                                {formError && (
-                                    <p role="alert" className="text-sm text-destructive">{formError}</p>
-                                )}
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                <ResumeTemplateSelector value={templateId} onChange={setTemplateId} />
-
-                                <p className="text-xs leading-relaxed text-muted-foreground">
-                                    You can change the template later without
-                                    losing your resume content.
-                                </p>
-                            </div>
-                        )}
-                    </div>
+                                    <p className="text-xs leading-relaxed text-muted-foreground">
+                                        You can change the template later without
+                                        losing your resume content.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </ScrollArea>
 
                     <DialogFooter className="shrink-0 border-t border-border px-6 py-4 sm:px-8">
                         <Button
