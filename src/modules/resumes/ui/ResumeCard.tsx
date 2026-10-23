@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/shared/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
 
 import type { Resume } from "../model/resume.types";
+
 import { ResumeThumbnail } from "./preview/ResumeThumbnail";
 
 interface ResumeCardProps {
@@ -54,6 +55,7 @@ export function ResumeCard({ resume, onEdit, onDuplicate, onDelete }: ResumeCard
                         <p className="text-[10px] text-muted-foreground">Updated {updated}</p>
                     </div>
 
+
                     <DropdownMenu>
                         <DropdownMenuTrigger
                             render={
@@ -62,29 +64,28 @@ export function ResumeCard({ resume, onEdit, onDuplicate, onDelete }: ResumeCard
                                     variant="ghost"
                                     size="icon-sm"
                                     aria-label={`Actions for ${resume.title}`}
-                                    className="size-7 shrink-0 rounded-sm"
                                 />
                             }
                         >
                             <MoreHorizontal className="size-4" />
                         </DropdownMenuTrigger>
 
-                        <DropdownMenuContent align="end" className="min-w-40">
+                        <DropdownMenuContent align="end" side="bottom">
                             <DropdownMenuItem onClick={() => onEdit(resume.id)}>
-                                <Pencil className="size-4" />
-                                Edit
+                                <Pencil />
+                                Edit resume
                             </DropdownMenuItem>
 
                             <DropdownMenuItem onClick={() => onDuplicate(resume.id)}>
-                                <Copy className="size-4" />
+                                <Copy />
                                 Duplicate
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
                             <DropdownMenuItem variant="destructive" onClick={() => onDelete(resume.id)}>
-                                <Trash2 className="size-4" />
-                                Delete
+                                <Trash2 />
+                                Delete resume
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

@@ -31,6 +31,7 @@ export function DeleteResumeDialog({ resume, onClose, onConfirm }: DeleteResumeD
                 }
                 cancelText="Cancel"
                 confirmText="Delete forever"
+                confirmVariant="destructive"
                 onCancel={onClose}
                 onConfirm={onConfirm}
             />

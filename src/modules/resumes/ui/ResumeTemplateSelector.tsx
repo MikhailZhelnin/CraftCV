@@ -1,9 +1,10 @@
 import { Check } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
-import { Badge } from "@/shared/ui/badge";
 
 import { RESUME_TEMPLATES, type ResumeTemplateId } from "../model/resume.templates";
+
+import { cn } from "cn";
 
 interface ResumeTemplateSelectorProps {
     value: ResumeTemplateId;
@@ -39,7 +40,7 @@ function TemplateThumbnail({ templateId }: { templateId: ResumeTemplateId; }) {
             </div>
         </div>
     );
-}
+};
 
 export function ResumeTemplateSelector({ value, onChange }: ResumeTemplateSelectorProps) {
     return (
@@ -54,26 +55,30 @@ export function ResumeTemplateSelector({ value, onChange }: ResumeTemplateSelect
                         variant="outline"
                         aria-pressed={isSelected}
                         onClick={() => onChange(template.id)}
-                        className={`h-auto w-full flex-col items-stretch gap-3 whitespace-normal p-3 text-left font-normal ${isSelected ? "border-primary ring-2 ring-primary/20" : ""}`}
+                        className={cn(
+                            "grid h-full w-full grid-rows-[180px_28px_44px] items-stretch justify-items-stretch gap-3",
+                            "rounded-sm border bg-card p-3 text-left",
+                            "whitespace-normal shadow-none transition-colors hover:border-foreground/40",
+                            "border border-border aria-pressed:border-primary"
+                        )}
                     >
-                        <div className="flex w-full justify-center rounded-md bg-muted/50 p-3">
+                        <div className="flex h-45 min-h-0 items-center justify-center overflow-hidden bg-muted">
                             <TemplateThumbnail templateId={template.id} />
                         </div>
 
-                        <div className="w-full space-y-2">
-                            <div className="flex items-center justify-between gap-2">
-                                <span className="text-sm font-semibold">{template.name}</span>
+                        <div className="flex h-7 min-w-0 items-center justify-between gap-2">
+                            <span className="truncate text-sm font-semibold">{template.name}</span>
 
-                                {isSelected && (
-                                    <Badge variant="secondary">
-                                        <Check className="size-3" />
-                                        Selected
-                                    </Badge>
-                                )}
-                            </div>
-
-                            <p className="text-xs leading-relaxed text-muted-foreground">{template.description}</p>
+                            {isSelected ? (
+                                <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary">
+                                    <Check className="size-3 text-primary-foreground" />
+                                </span>
+                            ) : (
+                                <span className="size-5 shrink-0 rounded-full border border-muted-foreground/60" />
+                            )}
                         </div>
+
+                        <p className="h-11 overflow-hidden text-xs leading-5.5 text-muted-foreground">{template.description}</p>
                     </Button>
                 );
             })}
