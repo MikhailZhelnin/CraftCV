@@ -12,3 +12,5 @@ export { ResumeSectionSettings } from "./ui/ResumeSectionSettings";
 export { ResumePreview } from "./ui/preview/ResumePreview";
 export { ResumeTemplateSelector } from "./ui/ResumeTemplateSelector";
 export { ResumeSectionActions } from "./ui/ResumeSectionActions";
+export { ResumeCard } from "./ui/ResumeCard";
+export { DeleteResumeDialog } from "./ui/DeleteResumeDialog";

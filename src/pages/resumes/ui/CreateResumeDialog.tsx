@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Plus } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -12,14 +11,17 @@ import { createEmptyCareerData } from "@/modules/career-data";
 import { useProfilesStore } from "@/modules/profiles";
 import { useResumesStore, resumeMetadataSchema, ResumeTemplateSelector, DEFAULT_RESUME_TEMPLATE, type ResumeTemplateId } from "@/modules/resumes";
 
-export function CreateResumeDialog() {
+interface CreateResumeDialogProps {
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+};
+
+export function CreateResumeDialog({ open, onOpenChange }: CreateResumeDialogProps) {
     const navigate = useNavigate();
 
     const profiles = useProfilesStore((state) => state.profiles);
 
     const createResume = useResumesStore((state) => state.createResume);
-
-    const [open, setOpen] = useState(false);
 
     const [title, setTitle] = useState("");
     const [targetRole, setTargetRole] = useState("");
@@ -51,7 +53,7 @@ export function CreateResumeDialog() {
     };
 
     const handleOpenChange = (nextOpen: boolean) => {
-        setOpen(nextOpen);
+        onOpenChange(nextOpen);
 
         if (!nextOpen) {
             resetForm();
@@ -88,118 +90,110 @@ export function CreateResumeDialog() {
     };
 
     return (
-        <>
-            <Button onClick={() => setOpen(true)}>
-                <Plus className="size-4" />
-                Create Resume
-            </Button>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
+            <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
+                <DialogHeader>
+                    <DialogTitle>Create New Resume</DialogTitle>
+                    <DialogDescription>
+                        Start from scratch or use an
+                        existing professional profile.
+                    </DialogDescription>
+                </DialogHeader>
 
-            <Dialog open={open} onOpenChange={handleOpenChange}>
-                <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
-                    <DialogHeader>
-                        <DialogTitle>Create New Resume</DialogTitle>
+                <div className="space-y-4">
+                    <Field data-invalid={!!titleError}>
+                        <FieldLabel htmlFor="resume-title">Resume Title</FieldLabel>
 
-                        <DialogDescription>
-                            Start from scratch or use an
-                            existing professional profile.
-                        </DialogDescription>
-                    </DialogHeader>
+                        <Input
+                            id="resume-title"
+                            value={title}
+                            onChange={(e) => {
+                                setTitle(e.target.value);
+                                setTitleError("");
+                            }}
+                            placeholder="Senior Frontend CV"
+                            aria-invalid={!!titleError}
+                        />
 
-                    <div className="space-y-4">
-                        <Field data-invalid={!!titleError}>
-                            <FieldLabel htmlFor="resume-title">Resume Title</FieldLabel>
-
-                            <Input
-                                id="resume-title"
-                                value={title}
-                                onChange={(e) => {
-                                    setTitle(e.target.value);
-                                    setTitleError("");
-                                }}
-                                placeholder="Senior Frontend CV"
-                                aria-invalid={!!titleError}
-                            />
-
-                            {titleError && (
-                                <FieldError>{titleError}</FieldError>
-                            )}
-                        </Field>
-
-                        <Field data-invalid={!!roleError}>
-                            <FieldLabel htmlFor="resume-role">Target Role</FieldLabel>
-
-                            <Input
-                                id="resume-role"
-                                value={targetRole}
-                                onChange={(e) => {
-                                    setTargetRole(e.target.value);
-                                    setRoleError("");
-                                }}
-                                placeholder="Senior React Developer"
-                                aria-invalid={!!roleError}
-                            />
-
-                            {roleError && (
-                                <FieldError>{roleError}</FieldError>
-                            )}
-                        </Field>
-
-                        <Field>
-                            <FieldLabel htmlFor="resume-source">Start From</FieldLabel>
-
-                            <Select
-                                items={profileOptions}
-                                value={sourceProfileId}
-                                onValueChange={(value) => {
-                                    if (typeof value === "string") {
-                                        setSourceProfileId(value);
-                                        setFormError("");
-                                    }
-                                }}
-                            >
-                                <SelectTrigger id="resume-source" className="w-full">
-                                    <SelectValue />
-                                </SelectTrigger>
-
-                                <SelectContent>
-                                    {profileOptions.map((option) => (
-                                        <SelectItem key={option.value} value={option.value} >
-                                            {option.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </Field>
-
-                        <Field>
-                            <FieldLabel>Resume Template</FieldLabel>
-
-                            <ResumeTemplateSelector value={templateId} onChange={setTemplateId} />
-                        </Field>
-
-                        {formError && (
-                            <p className="text-sm text-destructive">{formError}</p>
+                        {titleError && (
+                            <FieldError>{titleError}</FieldError>
                         )}
-                    </div>
+                    </Field>
 
-                    <DialogFooter>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => handleOpenChange(false)}
-                        >
-                            Cancel
-                        </Button>
+                    <Field data-invalid={!!roleError}>
+                        <FieldLabel htmlFor="resume-role">Target Role</FieldLabel>
 
-                        <Button
-                            type="button"
-                            onClick={handleCreate}
+                        <Input
+                            id="resume-role"
+                            value={targetRole}
+                            onChange={(e) => {
+                                setTargetRole(e.target.value);
+                                setRoleError("");
+                            }}
+                            placeholder="Senior React Developer"
+                            aria-invalid={!!roleError}
+                        />
+
+                        {roleError && (
+                            <FieldError>{roleError}</FieldError>
+                        )}
+                    </Field>
+
+                    <Field>
+                        <FieldLabel htmlFor="resume-source">Start From</FieldLabel>
+
+                        <Select
+                            items={profileOptions}
+                            value={sourceProfileId}
+                            onValueChange={(value) => {
+                                if (typeof value === "string") {
+                                    setSourceProfileId(value);
+                                    setFormError("");
+                                }
+                            }}
                         >
-                            Create Resume
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-        </>
+                            <SelectTrigger id="resume-source" className="w-full">
+                                <SelectValue />
+                            </SelectTrigger>
+
+                            <SelectContent>
+                                {profileOptions.map((option) => (
+                                    <SelectItem key={option.value} value={option.value} >
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </Field>
+
+                    <Field>
+                        <FieldLabel>Resume Template</FieldLabel>
+
+                        <ResumeTemplateSelector value={templateId} onChange={setTemplateId} />
+                    </Field>
+
+                    {formError && (
+                        <p className="text-sm text-destructive">{formError}</p>
+                    )}
+                </div>
+
+                <DialogFooter>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleOpenChange(false)}
+                    >
+                        Cancel
+                    </Button>
+
+                    <Button
+                        type="button"
+                        onClick={handleCreate}
+                    >
+                        Create Resume
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };

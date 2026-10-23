@@ -1,6 +1,7 @@
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
+import { Dialog } from "@/shared/ui/dialog";
 
-import { Button } from "@/shared/ui/button";
+import { ConfirmationDialogContent } from "./ConfirmationDialogContent";
+import { CircleAlert } from "lucide-react";
 
 interface Props {
     open: boolean;
@@ -16,35 +17,24 @@ export function UnsavedChangesDialog({ open, onStay, onLeave }: Props) {
                 if (!nextOpen) onStay();
             }}
         >
-            <DialogContent showCloseButton={false}>
-                <DialogHeader>
-                    <DialogTitle>Unsaved changes</DialogTitle>
-
-                    <DialogDescription>
+            <ConfirmationDialogContent
+                icon={<CircleAlert className="size-9" strokeWidth={1.7} />}
+                title="Unsaved Changes"
+                description={
+                    <>
                         You have unsaved changes.
-                        If you leave this page now,
-                        those changes will be lost.
-                    </DialogDescription>
-                </DialogHeader>
 
-                <DialogFooter>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={onStay}
-                    >
-                        Continue editing
-                    </Button>
-
-                    <Button
-                        type="button"
-                        variant="destructive"
-                        onClick={onLeave}
-                    >
-                        Leave without saving
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
+                        <span className="mt-1 block">
+                            Are you sure you want to leave?
+                            Your changes will be lost.
+                        </span>
+                    </>
+                }
+                cancelText="Stay on page"
+                confirmText="Leave anyway"
+                onCancel={onStay}
+                onConfirm={onLeave}
+            />
         </Dialog>
     );
 };
