@@ -35,10 +35,7 @@ export const useResumesStore = create<ResumesStore>()(
                 };
 
                 set((state) => ({
-                    resumes: [
-                        resume,
-                        ...state.resumes,
-                    ],
+                    resumes: [resume, ...state.resumes],
                 }));
 
                 return id;
@@ -88,9 +85,7 @@ export const useResumesStore = create<ResumesStore>()(
 
             deleteResume: (id) => {
                 set((state) => ({
-                    resumes: state.resumes.filter(
-                        (resume) => resume.id !== id
-                    ),
+                    resumes: state.resumes.filter((resume) => resume.id !== id),
                 }));
             },
         }),

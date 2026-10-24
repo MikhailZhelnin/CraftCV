@@ -7,6 +7,7 @@ interface ProfilesStore {
     profiles: Profile[];
     createProfile: (data: ProfileDraft) => string;
     updateProfile: (id: string, data: ProfileDraft) => void;
+    deleteProfile: (id: string) => void;
 };
 
 export const useProfilesStore = create<ProfilesStore>()(
@@ -15,11 +16,12 @@ export const useProfilesStore = create<ProfilesStore>()(
             profiles: [],
 
             createProfile: (data) => {
+                const id = crypto.randomUUID();
                 const now = new Date().toISOString();
 
                 const profile: Profile = {
                     ...data,
-                    id: crypto.randomUUID(),
+                    id,
                     createdAt: now,
                     updatedAt: now,
                 };
@@ -42,6 +44,12 @@ export const useProfilesStore = create<ProfilesStore>()(
                             }
                             : profile
                     ),
+                }));
+            },
+
+            deleteProfile: (id) => {
+                set((state) => ({
+                    profiles: state.profiles.filter((profile) => profile.id !== id),
                 }));
             },
         }),
