@@ -30,6 +30,8 @@ const ProfilesPage = () => {
     const [activeTab, setActiveTab] = useState<ProfileTab>("all");
     const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
 
+    const [referenceTime] = useState(Date.now);
+
     const selectedProfile = profiles.find((profile) => profile.id === profileToDelete) ?? null;
 
     const normalizedSearch = search.trim().toLowerCase();
@@ -49,7 +51,7 @@ const ProfilesPage = () => {
             const updatedAt = new Date(profile.updatedAt).getTime();
             const thirtyDays = 30 * 24 * 60 * 60 * 1000;
 
-            return Date.now() - updatedAt <= thirtyDays;
+            return referenceTime - updatedAt <= thirtyDays;
         })
         .sort((a, b) => {
             const aTime = new Date(a.updatedAt).getTime();

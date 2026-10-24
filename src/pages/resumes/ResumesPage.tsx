@@ -32,6 +32,8 @@ const ResumesPage = () => {
     const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
     const [search, setSearch] = useState("");
 
+    const [referenceTime] = useState(Date.now);
+
     const selectedResume = resumes.find((resume) => resume.id === resumeToDelete) ?? null;
 
     const normalizedSearch = search.trim().toLowerCase();
@@ -51,7 +53,7 @@ const ResumesPage = () => {
             const updatedAt = new Date(resume.updatedAt).getTime();
             const thirtyDays = 30 * 24 * 60 * 60 * 1000;
 
-            return Date.now() - updatedAt <= thirtyDays;
+            return referenceTime - updatedAt <= thirtyDays;
         })
         .sort((a, b) => {
             const aTime = new Date(a.updatedAt).getTime();
