@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check code quality
+      - name: Run ESLint
         run: npm run lint
 
       - name: Build application
