@@ -12,12 +12,6 @@ interface ProfileListProps {
 };
 
 export function ProfileList({ profiles, onEdit, onDelete, onCreateNew }: ProfileListProps) {
-    if (profiles.length === 0) {
-        return (
-            <p className="text-center text-gray-500">No profiles yet.</p>
-        );
-    };
-
     return (
         <div className="grid auto-rows-fr grid-cols-1 gap-4 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mb-4">
             {profiles.map((profile => (

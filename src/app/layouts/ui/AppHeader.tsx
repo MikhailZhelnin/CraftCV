@@ -44,7 +44,7 @@ const AppHeader = () => {
                         aria-label="CraftCV home"
                         className="mr-21.25 shrink-0 text-3xl font-black tracking-[-0.07em] text-foreground"
                     >
-                        craftcv.
+                        cvenza.
                     </NavLink>
 
                     <nav

@@ -147,7 +147,7 @@ const ProfilesPage = () => {
                                         value={search}
                                         onChange={(event) => setSearch(event.target.value)}
                                         placeholder="Search..."
-                                        aria-label="Search resumes"
+                                        aria-label="Search profiles"
                                         className="h-8 w-36 rounded-sm bg-card pl-8 text-xs sm:w-42"
                                     />
                                 </div>
@@ -163,7 +163,7 @@ const ProfilesPage = () => {
                                 >
                                     <SelectTrigger
                                         size="sm"
-                                        aria-label="Sort resumes"
+                                        aria-label="Sort profiles"
                                         className="w-31 rounded-sm text-xs"
                                     >
                                         <SelectValue />
