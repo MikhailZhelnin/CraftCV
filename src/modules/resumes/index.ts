@@ -13,4 +13,6 @@ export { ResumePreview, type ResumePreviewHandle } from "./ui/preview/ResumePrev
 export { ResumeTemplateSelector } from "./ui/ResumeTemplateSelector";
 export { ResumeSectionActions } from "./ui/ResumeSectionActions";
 export { ResumeCard } from "./ui/ResumeCard";
+export { CreateResumeDialog } from "./ui/CreateResumeDialog";
 export { DeleteResumeDialog } from "./ui/DeleteResumeDialog";
+export { ResumeEditorForm } from "./ui/ResumeEditorForm";

@@ -1,16 +1,14 @@
 import { useNavigate, useParams } from "react-router";
 
-import { ProfileForm, useProfilesStore, type ProfileDraft } from "@/modules/profiles";
+import { ProfileEditorForm, useProfilesStore, type ProfileDraft } from "@/modules/profiles";
 
 export function ProfileEditorPage() {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
 
-    const profiles = useProfilesStore((state) => state.profiles);
+    const profile = useProfilesStore((state) => id ? state.profiles.find((item) => item.id === id) : undefined);
     const createProfile = useProfilesStore((state) => state.createProfile);
     const updateProfile = useProfilesStore((state) => state.updateProfile);
-
-    const profile = id ? profiles.find((item) => item.id === id) : undefined;
 
     if (id && !profile) {
         return (
@@ -21,7 +19,7 @@ export function ProfileEditorPage() {
         );
     };
 
-    const handleSave = (data: ProfileDraft) => {
+    const handleSave = (data: ProfileDraft): void => {
         if (id) {
             updateProfile(id, data);
         } else {
@@ -31,7 +29,7 @@ export function ProfileEditorPage() {
 
     return (
         <div className="h-full min-h-0">
-            <ProfileForm
+            <ProfileEditorForm
                 key={id ?? "new"}
                 initialValues={
                     profile
@@ -42,7 +40,7 @@ export function ProfileEditorPage() {
                         }
                         : undefined
                 }
-                onSubmit={handleSave}
+                onSave={handleSave}
                 onCancel={() => navigate("/profiles")}
             />
         </div>

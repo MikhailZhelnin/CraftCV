@@ -1,5 +1,5 @@
 export { ProfileList } from "./ui/ProfileList";
-export { ProfileForm } from "./ui/ProfileForm";
+export { ProfileEditorForm } from "./ui/ProfileEditorForm";
 
 export { useProfilesStore } from "./model/profiles.store";
 

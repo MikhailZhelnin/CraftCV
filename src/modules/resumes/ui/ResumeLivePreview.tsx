@@ -1,7 +1,10 @@
 import type { Ref } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
-import { ResumePreview, DEFAULT_RESUME_TEMPLATE, type ResumeDraft, type ResumePreviewHandle } from "@/modules/resumes";
+import type { ResumeDraft } from "../model/resume.types";
+import { DEFAULT_RESUME_TEMPLATE } from "../model/resume.templates";
+
+import { ResumePreview, type ResumePreviewHandle, } from "./preview/ResumePreview";
 
 interface ResumeLivePreviewProps {
     printRef: Ref<ResumePreviewHandle>;
@@ -14,6 +17,7 @@ export function ResumeLivePreview({ printRef }: ResumeLivePreviewProps) {
     const targetRole = useWatch({ control, name: "targetRole" });
     const sections = useWatch({ control, name: "sections" });
     const templateId = useWatch({ control, name: "templateId" }) ?? DEFAULT_RESUME_TEMPLATE;
+
     const title = useWatch({ control, name: "title" });
 
     if (!careerData || !sections) return null;
@@ -22,10 +26,7 @@ export function ResumeLivePreview({ printRef }: ResumeLivePreviewProps) {
         <div className="space-y-4">
             <div className="flex items-center justify-between gap-3">
                 <h2 className="text-xs font-medium text-foreground">Live Preview</h2>
-
-                <span className="text-xs text-muted-foreground">
-                    A4 · {templateId === "modern" ? "Modern" : "Classic"}
-                </span>
+                <span className="text-xs text-muted-foreground">A4 · {templateId === "modern" ? "Modern" : "Classic"}</span>
             </div>
 
             <ResumePreview

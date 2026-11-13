@@ -5,10 +5,9 @@ import { ArrowUpRight, Plus, Search } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
-
-import { DeleteResumeDialog, ResumeCard, useResumesStore } from "@/modules/resumes";
-import { CreateResumeDialog } from "./ui/CreateResumeDialog";
 import { ScrollArea } from "@/shared/ui/scroll-area";
+
+import { CreateResumeDialog, DeleteResumeDialog, ResumeCard, useResumesStore } from "@/modules/resumes";
 
 type ResumeTab = "all" | "recent";
 type SortOrder = "newest" | "oldest";

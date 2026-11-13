@@ -7,13 +7,13 @@ import { Input } from "@/shared/ui/input";
 import { Field, FieldError, FieldLabel } from "@/shared/ui/field";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
+import { ScrollArea } from "@/shared/ui/scroll-area";
 
 import { createEmptyCareerData } from "@/modules/career-data";
 import { useProfilesStore } from "@/modules/profiles";
 import { useResumesStore, resumeMetadataSchema, ResumeTemplateSelector, DEFAULT_RESUME_TEMPLATE, type ResumeTemplateId } from "@/modules/resumes";
 
 import { cn } from "cn";
-import { ScrollArea } from "@/shared/ui/scroll-area";
 
 type CreateStep = "details" | "template";
 
