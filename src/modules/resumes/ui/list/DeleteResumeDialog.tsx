@@ -3,7 +3,7 @@ import { Trash2 } from "lucide-react";
 import { Dialog } from "@/shared/ui/dialog";
 import { ConfirmationDialogContent } from "@/shared/components/ConfirmationDialogContent";
 
-import type { Resume } from "../model/resume.types";
+import type { Resume } from "../../model/resume.types";
 
 interface DeleteResumeDialogProps {
     resume: Resume | null;

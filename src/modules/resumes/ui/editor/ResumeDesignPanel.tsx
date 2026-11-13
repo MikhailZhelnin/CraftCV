@@ -2,9 +2,9 @@ import { Controller, useFormContext } from "react-hook-form";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/shared/ui/card";
 
-import type { ResumeDraft } from "../model/resume.types";
+import type { ResumeDraft } from "../../model/resume.types";
 
-import { ResumeTemplateSelector } from "./ResumeTemplateSelector";
+import { ResumeTemplateSelector } from "./../templates/ResumeTemplateSelector";
 
 export function ResumeDesignPanel() {
     const { control } = useFormContext<ResumeDraft>();

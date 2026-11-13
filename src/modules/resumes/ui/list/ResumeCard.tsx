@@ -4,9 +4,9 @@ import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/shared/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
 
-import type { Resume } from "../model/resume.types";
+import type { Resume } from "../../model/resume.types";
 
-import { ResumeThumbnail } from "./preview/ResumeThumbnail";
+import { ResumeThumbnail } from "./../preview/ResumeThumbnail";
 
 interface ResumeCardProps {
     resume: Resume;

@@ -8,11 +8,15 @@ export { resumeMetadataSchema, resumeDraftSchema } from "./model/resume.schema";
 
 export { useResumesStore } from "./model/resumes.store";
 
-export { ResumeSectionSettings } from "./ui/ResumeSectionSettings";
-export { ResumePreview, type ResumePreviewHandle } from "./ui/preview/ResumePreview";
-export { ResumeTemplateSelector } from "./ui/ResumeTemplateSelector";
-export { ResumeSectionActions } from "./ui/ResumeSectionActions";
-export { ResumeCard } from "./ui/ResumeCard";
 export { CreateResumeDialog } from "./ui/CreateResumeDialog";
-export { DeleteResumeDialog } from "./ui/DeleteResumeDialog";
-export { ResumeEditorForm } from "./ui/ResumeEditorForm";
+
+export { ResumeSectionSettings } from "./ui/editor/ResumeSectionSettings";
+export { ResumeEditorForm } from "./ui/editor/ResumeEditorForm";
+export { ResumeSectionActions } from "./ui/editor/ResumeSectionActions";
+
+export { ResumePreview, type ResumePreviewHandle } from "./ui/preview/ResumePreview";
+
+export { ResumeCard } from "./ui/list/ResumeCard";
+export { DeleteResumeDialog } from "./ui/list/DeleteResumeDialog";
+
+export { ResumeTemplateSelector } from "./ui/templates/ResumeTemplateSelector";

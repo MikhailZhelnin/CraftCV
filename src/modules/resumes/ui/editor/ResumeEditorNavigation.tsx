@@ -6,7 +6,7 @@ import { CareerSectionNavigator, type CareerSectionId } from "@/modules/career-d
 
 import { Button } from "@/shared/ui/button";
 
-import type { ResumeDraft } from "../model/resume.types";
+import type { ResumeDraft } from "../../model/resume.types";
 
 export type ResumeEditorPanel = | CareerSectionId | "details" | "design";
 

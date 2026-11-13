@@ -10,10 +10,10 @@ import { EditorWorkspace } from "@/shared/components/EditorWorkspace";
 import { UnsavedChangesDialog } from "@/shared/components/UnsavedChangesDialog";
 import { useUnsavedChangesGuard } from "@/shared/hooks/useUnsavedChangesGuard";
 
-import type { ResumeDraft } from "../model/resume.types";
-import { resumeDraftSchema } from "../model/resume.schema";
+import type { ResumeDraft } from "../../model/resume.types";
+import { resumeDraftSchema } from "../../model/resume.schema";
 
-import type { ResumePreviewHandle } from "./preview/ResumePreview";
+import type { ResumePreviewHandle } from "./../preview/ResumePreview";
 import { ResumeEditorNavigation, type ResumeEditorPanel } from "./ResumeEditorNavigation";
 import { ResumeSectionActions } from "./ResumeSectionActions";
 import { ResumeDetailsPanel } from "./ResumeDetailsPanel";

@@ -6,7 +6,7 @@ import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { Field, FieldLabel, FieldError } from "@/shared/ui/field";
 
-import type { ProfileDraft } from "../model/profile.types";
+import type { ProfileDraft } from "../../model/profile.types";
 
 export function ProfileDetailsPanel() {
     const { register, formState: { errors } } = useFormContext<ProfileDraft>();

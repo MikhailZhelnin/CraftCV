@@ -10,12 +10,12 @@ import { EditorWorkspace } from "@/shared/components/EditorWorkspace";
 import { UnsavedChangesDialog } from "@/shared/components/UnsavedChangesDialog";
 import { useUnsavedChangesGuard } from "@/shared/hooks/useUnsavedChangesGuard";
 
-import type { ProfileDraft } from "../model/profile.types";
-import { profileFormSchema } from "../model/profile.schema";
+import type { ProfileDraft } from "../../model/profile.types";
+import { profileFormSchema } from "../../model/profile.schema";
 
-import { ProfileEditorNavigation, type ProfileEditorPanel } from "./ProfileEditorNavigation";
-import { ProfileDetailsPanel } from "./ProfileDetailsPanel";
-import { ProfileOverview } from "./ProfileOverview";
+import { ProfileEditorNavigation, type ProfileEditorPanel } from "../editor/ProfileEditorNavigation";
+import { ProfileDetailsPanel } from "../editor/ProfileDetailsPanel";
+import { ProfileOverview } from "../editor/ProfileOverview";
 
 interface ProfileEditorFormProps {
     initialValues?: ProfileDraft;

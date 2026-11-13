@@ -1,10 +1,10 @@
 import type { Ref } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
-import type { ResumeDraft } from "../model/resume.types";
-import { DEFAULT_RESUME_TEMPLATE } from "../model/resume.templates";
+import type { ResumeDraft } from "../../model/resume.types";
+import { DEFAULT_RESUME_TEMPLATE } from "../../model/resume.templates";
 
-import { ResumePreview, type ResumePreviewHandle, } from "./preview/ResumePreview";
+import { ResumePreview, type ResumePreviewHandle, } from "./../preview/ResumePreview";
 
 interface ResumeLivePreviewProps {
     printRef: Ref<ResumePreviewHandle>;

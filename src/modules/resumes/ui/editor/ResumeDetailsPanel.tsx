@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/sha
 import { Input } from "@/shared/ui/input";
 import { Field, FieldLabel, FieldError } from "@/shared/ui/field";
 
-import type { ResumeDraft } from "../model/resume.types";
+import type { ResumeDraft } from "../../model/resume.types";
 
 export function ResumeDetailsPanel() {
     const { register, formState: { errors } } = useFormContext<ResumeDraft>();

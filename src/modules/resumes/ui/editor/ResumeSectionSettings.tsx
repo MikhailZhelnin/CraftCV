@@ -8,7 +8,7 @@ import { FieldLabel } from "@/shared/ui/field";
 
 import { CAREER_SECTION_LABELS } from "@/modules/career-data";
 
-import type { ResumeSectionSetting } from "../model/resume.types";
+import type { ResumeSectionSetting } from "../../model/resume.types";
 
 interface ResumeSectionSettingsProps {
     value: ResumeSectionSetting[];

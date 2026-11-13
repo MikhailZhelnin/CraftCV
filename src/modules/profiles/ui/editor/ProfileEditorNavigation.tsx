@@ -6,7 +6,7 @@ import { CAREER_SECTION_IDS, CareerSectionNavigator, type CareerSectionId } from
 
 import { Button } from "@/shared/ui/button";
 
-import type { ProfileDraft } from "../model/profile.types";
+import type { ProfileDraft } from "../../model/profile.types";
 
 export type ProfileEditorPanel = | "details" | CareerSectionId;
 

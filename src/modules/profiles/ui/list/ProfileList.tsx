@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 
-import type { ProfileSummary } from "../model/profile.types";
+import type { ProfileSummary } from "../../model/profile.types";
 
 import { ProfileCard } from "./ProfileCard";
 

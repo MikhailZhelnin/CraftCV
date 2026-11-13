@@ -5,7 +5,7 @@ import { Switch } from "@/shared/ui/switch";
 
 import { CAREER_SECTION_LABELS } from "@/modules/career-data";
 
-import type { ResumeSectionSetting } from "../model/resume.types";
+import type { ResumeSectionSetting } from "../../model/resume.types";
 
 interface Props {
     section: ResumeSectionSetting;

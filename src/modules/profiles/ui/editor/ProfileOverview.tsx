@@ -1,7 +1,7 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { BriefcaseBusiness, GraduationCap, FolderGit2, Wrench } from "lucide-react";
 
-import type { ProfileDraft } from "../model/profile.types";
+import type { ProfileDraft } from "../../model/profile.types";
 
 export function ProfileOverview() {
     const { control } = useFormContext<ProfileDraft>();
