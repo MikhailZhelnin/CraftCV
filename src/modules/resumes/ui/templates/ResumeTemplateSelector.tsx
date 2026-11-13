@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
 
-import { RESUME_TEMPLATES, type ResumeTemplateId } from "../model/resume.templates";
+import { RESUME_TEMPLATES, type ResumeTemplateId } from "../../model/resume.templates";
 
 import { cn } from "cn";
 

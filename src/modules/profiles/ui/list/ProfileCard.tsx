@@ -4,7 +4,7 @@ import { Card, CardFooter, CardContent, CardHeader } from "@/shared/ui/card";
 import { Button } from "@/shared/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
 
-import type { ProfileSummary } from "../model/profile.types";
+import type { ProfileSummary } from "../../model/profile.types";
 
 interface ProfileCardProps {
     profile: ProfileSummary;

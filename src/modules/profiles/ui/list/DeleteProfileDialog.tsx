@@ -3,7 +3,7 @@ import { Trash2 } from "lucide-react";
 import { Dialog } from "@/shared/ui/dialog";
 import { ConfirmationDialogContent } from "@/shared/components/ConfirmationDialogContent";
 
-import type { Profile } from "../model/profile.types";
+import type { Profile } from "../../model/profile.types";
 
 interface DeleteProfileDialogProps {
     profile: Profile | null;
