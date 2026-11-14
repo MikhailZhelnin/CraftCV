@@ -3,9 +3,11 @@ import { persist } from "zustand/middleware";
 
 import type { Profile, ProfileDraft } from "./profile.types";
 
+import { pickProfileAccentTone, type ProfileAccentTone } from "./profile.accent";
+
 interface ProfilesStore {
     profiles: Profile[];
-    createProfile: (data: ProfileDraft) => string;
+    createProfile: (data: ProfileDraft, accentTone?: ProfileAccentTone) => string;
     updateProfile: (id: string, data: ProfileDraft) => void;
     deleteProfile: (id: string) => void;
 };
@@ -15,7 +17,7 @@ export const useProfilesStore = create<ProfilesStore>()(
         (set) => ({
             profiles: [],
 
-            createProfile: (data) => {
+            createProfile: (data, accentTone) => {
                 const id = crypto.randomUUID();
                 const now = new Date().toISOString();
 
@@ -24,6 +26,7 @@ export const useProfilesStore = create<ProfilesStore>()(
                     id,
                     createdAt: now,
                     updatedAt: now,
+                    accentTone: accentTone ?? pickProfileAccentTone(id),
                 };
 
                 set((state) => ({
