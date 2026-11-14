@@ -15,7 +15,7 @@ interface SkillsFieldsProps {
     onChange: (value: string[]) => void;
 };
 
-export function SkillsFields({ value, error, label = "Skills", placeholder = "React, TypeScript", maxItems = 30, onChange }: SkillsFieldsProps) {
+export function SkillsFields({ value, error, label = "Skills", placeholder = "Enter a skill...", maxItems = 30, onChange }: SkillsFieldsProps) {
     const inputId = useId();
 
     const [draft, setDraft] = useState("");
@@ -97,7 +97,7 @@ export function SkillsFields({ value, error, label = "Skills", placeholder = "Re
                     <Badge
                         key={`${skill}-${index}`}
                         variant="secondary"
-                        className="gap-2 py-1 pl-3 pr-1"
+                        className="gap-2 py-1 pr-1"
                     >
                         {skill}
 
@@ -105,7 +105,7 @@ export function SkillsFields({ value, error, label = "Skills", placeholder = "Re
                             type="button"
                             variant="ghost"
                             size="icon"
-                            className="size-5 rounded-full"
+                            className="size-3.5 rounded-full"
                             onClick={() => removeSkill(index)}
                             aria-label={`Remove ${skill}`}
                         >

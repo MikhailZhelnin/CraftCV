@@ -49,7 +49,7 @@ export function calculateProfileCompleteness(data: CareerData): ProfileCompletio
         {
             id: "skills",
             weight: 15,
-            earned: data.skills.some(isFilled) ? 15 : 0,
+            earned: data.skills.some((group) => group.skills.some((skill) => skill.trim().length > 0)) ? 15 : 0,
         },
         {
             id: "projects",

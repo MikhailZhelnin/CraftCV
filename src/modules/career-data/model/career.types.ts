@@ -27,7 +27,11 @@ export interface Education {
   description: string;
 };
 
-export type Skill = string;
+export interface SkillGroup {
+  id: string;
+  name: string;
+  skills: string[];
+};
 
 export interface Project {
   id: string;
@@ -57,7 +61,7 @@ export interface CareerData {
   summary: string;
   experience: Experience[];
   education: Education[];
-  skills: Skill[];
+  skills: SkillGroup[];
   projects: Project[];
   languages: SpokenLanguage[];
 };

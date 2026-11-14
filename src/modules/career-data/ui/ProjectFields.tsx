@@ -148,8 +148,8 @@ export function ProjectFields({ value, errors, onChange }: ProjectFieldsProps) {
             </Field>
 
             <SkillsFields
-                label="Technologies"
-                placeholder="React, TypeScript, Node.js..."
+                label="Tools & Technologies"
+                placeholder="Add a tool or method..."
                 maxItems={15}
                 value={value.technologies}
                 onChange={(technologies) => update({ technologies })}

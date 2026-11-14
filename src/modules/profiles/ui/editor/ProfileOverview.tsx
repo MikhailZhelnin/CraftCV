@@ -1,5 +1,5 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import { BriefcaseBusiness, GraduationCap, FolderGit2, Wrench } from "lucide-react";
+import { BriefcaseBusiness, GraduationCap, FolderGit2, Wrench, Languages } from "lucide-react";
 
 import type { ProfileDraft } from "../../model/profile.types";
 import { calculateProfileCompleteness } from "../../model/profile.completion";
@@ -30,8 +30,9 @@ export function ProfileOverview({ accentTone }: ProfileOverviewProps) {
     const stats = [
         { label: "Experience", value: careerData.experience.length, icon: BriefcaseBusiness },
         { label: "Education", value: careerData.education.length, icon: GraduationCap },
-        { label: "Skills", value: careerData.skills.length, icon: Wrench },
+        { label: "Skills", value: careerData.skills.reduce((total, group) => total + group.skills.length, 0), icon: Wrench },
         { label: "Projects", value: careerData.projects.length, icon: FolderGit2 },
+        { label: "Languages", value: careerData.languages.filter((item) => item.name.trim().length > 0).length, icon: Languages },
     ];
 
     const accentClassName = getProfileAccentSwatchClassName(accentTone);
@@ -61,7 +62,7 @@ export function ProfileOverview({ accentTone }: ProfileOverviewProps) {
 
             <div className="grid grid-cols-2 gap-3">
                 {stats.map(({ label, value, icon: Icon }) => (
-                    <div key={label} className="border border-border bg-card p-4">
+                    <div key={label} className="border border-border bg-card p-4 last:col-span-2">
                         <Icon className="mb-4 size-4 text-muted-foreground" />
 
                         <p className="font-display text-3xl leading-none">{value}</p>

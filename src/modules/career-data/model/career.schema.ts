@@ -41,11 +41,7 @@ export const experienceSchema = z.object({
     description: z.string().trim().max(2000),
 }).superRefine((data, ctx) => {
     if (!data.isCurrent && data.startDate && data.endDate && data.endDate < data.startDate) {
-        ctx.addIssue({
-            code: "custom",
-            path: ["endDate"],
-            message: "End date cannot be before start date",
-        });
+        ctx.addIssue({ code: "custom", path: ["endDate"], message: "End date cannot be before start date" });
     };
 });
 
@@ -60,24 +56,53 @@ export const educationSchema = z.object({
     description: z.string().trim().max(1000),
 }).superRefine((data, ctx) => {
     if (!data.isCurrent && data.startDate && data.endDate && data.endDate < data.startDate) {
-        ctx.addIssue({
-            code: "custom",
-            path: ["endDate"],
-            message: "End date cannot be before start date",
-        });
+        ctx.addIssue({ code: "custom", path: ["endDate"], message: "End date cannot be before start date" });
     };
 });
 
-export const skillsSchema = z
-    .array(z.string().trim().min(1, "Skill cannot be empty").max(40, "Skill is too long"))
-    .max(30, "Maximum 30 skills")
-    .refine((skills) => {
-        const normalized = skills.map((skill) => skill.toLowerCase());
+const skillSchema = z.string().trim().min(1, "Skill cannot be empty").max(40, "Maximum 40 characters");
 
-        return new Set(normalized).size === skills.length;
-    },
-        "Duplicate skills are not allowed",
-    );
+export const skillGroupSchema = z.object({
+    id: z.string().min(1),
+    name: z.string().trim().min(1, "Category name is required").max(60, "Maximum 60 characters"),
+    skills: z.array(skillSchema).max(30, "Maximum 30 skills per category"),
+});
+
+export const skillsSchema = z
+    .array(skillGroupSchema)
+    .max(8, "Maximum 8 skill categories")
+    .superRefine((groups, ctx) => {
+        const names = new Set<string>();
+        const allSkills = new Set<string>();
+
+        let totalSkills = 0;
+
+        groups.forEach((group, groupIndex) => {
+            const normalizedName = group.name.toLowerCase();
+
+            if (normalizedName && names.has(normalizedName)) {
+                ctx.addIssue({ code: "custom", path: [groupIndex, "name"], message: "Category already exists" });
+            };
+
+            names.add(normalizedName);
+
+            group.skills.forEach((skill) => {
+                const normalizedSkill = skill.toLowerCase();
+
+                if (allSkills.has(normalizedSkill)) {
+                    ctx.addIssue({ code: "custom", path: [groupIndex, "skills"], message: "This skill is already used in another category" });
+                };
+
+                allSkills.add(normalizedSkill);
+            });
+
+            totalSkills += group.skills.length;
+        });
+
+        if (totalSkills > 30 && groups.length > 0) {
+            ctx.addIssue({ code: "custom", path: [0, "skills"], message: "Maximum 30 skills across all categories" });
+        };
+    });
 
 const projectTechnologiesSchema = z
     .array(z.string().trim().min(1).max(40))
@@ -106,11 +131,7 @@ export const projectSchema = z
     })
     .superRefine((data, ctx) => {
         if (!data.isCurrent && data.startDate && data.endDate && data.endDate < data.startDate) {
-            ctx.addIssue({
-                code: "custom",
-                path: ["endDate"],
-                message: "End date cannot be before start date",
-            });
+            ctx.addIssue({ code: "custom", path: ["endDate"], message: "End date cannot be before start date" });
         };
     });
 
@@ -132,11 +153,7 @@ export const languagesSchema = z
             if (!normalized) return;
 
             if (names.has(normalized)) {
-                ctx.addIssue({
-                    code: "custom",
-                    path: [index, "name"],
-                    message: "This language is already added",
-                });
+                ctx.addIssue({ code: "custom", path: [index, "name"], message: "This language is already added" });
             };
 
             names.add(normalized);
