@@ -13,7 +13,9 @@ function getInitialTheme(): Theme {
         if (saved === "dark" || saved === "light") {
             return saved;
         };
-    } catch { };
+    } catch {
+        // localStorage is unavailable; use the system preference instead.
+    };
 
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 };
@@ -30,7 +32,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
         try {
             localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
-        } catch { };
+        } catch {
+            // localStorage is unavailable; keep the theme only in memory.
+        };
     };
 
     return (
