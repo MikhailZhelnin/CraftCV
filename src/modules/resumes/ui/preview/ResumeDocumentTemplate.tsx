@@ -72,7 +72,12 @@ export function ResumeDocumentTemplate({ data, targetRole, sections, templateId 
     const educations = education.filter((item) => item.institution.trim() || item.degree.trim() || item.fieldOfStudy.trim());
     const visibleProjects = projects.filter((item) => item.name.trim() || item.role.trim() || item.description.trim());
     const visibleLanguages = languages.filter((item) => item.name.trim());
-    const visibleSkills = skills.filter((skill) => skill.trim());
+    const visibleSkillGroups = skills
+        .map((group) => ({
+            ...group,
+            skills: group.skills.filter((skill) => skill.trim().length > 0),
+        }))
+        .filter((group) => group.name.trim().length > 0 && group.skills.length > 0);
 
     const content: Record<CareerSectionId, ReactNode> = {
         personal: hasPersonalContent ? (
@@ -169,9 +174,17 @@ export function ResumeDocumentTemplate({ data, targetRole, sections, templateId 
             </ResumeSection>
         ) : null,
 
-        skills: visibleSkills.length > 0 ? (
+
+        skills: visibleSkillGroups.length > 0 ? (
             <ResumeSection title="Skills" templateId={templateId}>
-                <p className="text-[12px] leading-relaxed text-slate-700">{visibleSkills.join("  ·  ")}</p>
+                <div className="space-y-3">
+                    {visibleSkillGroups.map((group) => (
+                        <div key={group.id} className="cv-entry space-y-1">
+                            <h3 className="text-[12px] font-semibold text-slate-800">{group.name}</h3>
+                            <p className="text-[12px] leading-relaxed text-slate-700">{group.skills.join("  ·  ")}</p>
+                        </div>
+                    ))}
+                </div>
             </ResumeSection>
         ) : null,
 

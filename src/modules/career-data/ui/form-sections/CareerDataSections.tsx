@@ -7,7 +7,7 @@ import { PersonalDetailsFields } from "../PersonalDetailsFields";
 import { SummaryFields } from "../SummaryFields";
 import { ExperienceFields } from "../ExperienceFields";
 import { EducationFields } from "../EducationFields";
-import { SkillsFields } from "../SkillsFields";
+import { SkillGroupsSection } from "../skill-groups/SkillGroupsSection";
 import { ProjectFields } from "../ProjectFields";
 import { LanguageFields } from "../LanguageFields";
 
@@ -201,31 +201,7 @@ export function CareerDataSections({ order = CAREER_SECTION_IDS, hiddenIds = [],
         ),
 
         skills: (
-            <Card>
-                <CardHeader>
-                    <CardTitle>Skills</CardTitle>
-                    <CardDescription>Add your professional skills.</CardDescription>
-                    {renderSectionActions && (
-                        <CardAction>
-                            {renderSectionActions("skills")}
-                        </CardAction>
-                    )}
-                </CardHeader>
-
-                <CardContent>
-                    <Controller
-                        name="careerData.skills"
-                        control={control}
-                        render={({ field, fieldState }) => (
-                            <SkillsFields
-                                value={field.value}
-                                onChange={field.onChange}
-                                error={fieldState.error?.message}
-                            />
-                        )}
-                    />
-                </CardContent>
-            </Card>
+            <SkillGroupsSection headerActions={renderSectionActions?.("skills")} />
         ),
 
         projects: (

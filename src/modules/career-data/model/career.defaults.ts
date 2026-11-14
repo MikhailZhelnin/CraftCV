@@ -1,4 +1,4 @@
-import type { CareerData, Education, Experience, Project, SpokenLanguage } from "./career.types";
+import type { CareerData, Education, Experience, Project, SpokenLanguage, SkillGroup } from "./career.types";
 
 export function createEmptyExperience(): Experience {
     return {
@@ -42,6 +42,14 @@ export const createEmptyLanguage = (): SpokenLanguage => ({
     level: "",
 });
 
+export function createEmptySkillGroup(name = ""): SkillGroup {
+    return {
+        id: crypto.randomUUID(),
+        name,
+        skills: [],
+    };
+};
+
 export function createEmptyCareerData(): CareerData {
     return {
         personal: {
@@ -54,7 +62,7 @@ export function createEmptyCareerData(): CareerData {
         summary: "",
         experience: [],
         education: [],
-        skills: [],
+        skills: [createEmptySkillGroup("Professional Skills")],
         projects: [],
         languages: [],
     };

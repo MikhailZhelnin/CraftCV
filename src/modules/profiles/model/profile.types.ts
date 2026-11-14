@@ -1,5 +1,7 @@
 import type { CareerData } from "@/modules/career-data";
 
+import type { ProfileAccentTone } from "./profile.accent";
+
 export interface Profile {
   id: string;
   name: string;
@@ -7,6 +9,7 @@ export interface Profile {
   careerData: CareerData;
   createdAt: string;
   updatedAt: string;
+  accentTone?: ProfileAccentTone;
 };
 
 export type ProfileDraft = Pick<Profile, "name" | "description" | "careerData">;

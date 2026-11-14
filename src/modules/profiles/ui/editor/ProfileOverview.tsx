@@ -1,14 +1,26 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import { BriefcaseBusiness, GraduationCap, FolderGit2, Wrench } from "lucide-react";
+import { BriefcaseBusiness, GraduationCap, FolderGit2, Wrench, Languages } from "lucide-react";
 
 import type { ProfileDraft } from "../../model/profile.types";
+import { calculateProfileCompleteness } from "../../model/profile.completion";
+import { getProfileAccentSwatchClassName, type ProfileAccentTone } from "../../model/profile.accent";
 
-export function ProfileOverview() {
+import { ProfileCompletion } from "../completion/ProfileCompletion";
+
+import { cn } from "cn";
+
+interface ProfileOverviewProps {
+    accentTone: ProfileAccentTone;
+};
+
+export function ProfileOverview({ accentTone }: ProfileOverviewProps) {
     const { control } = useFormContext<ProfileDraft>();
 
     const profileName = useWatch({ control, name: "name" });
     const description = useWatch({ control, name: "description" });
     const careerData = useWatch({ control, name: "careerData" });
+
+    const completion = calculateProfileCompleteness(careerData);
 
     const fullName = careerData.personal.fullName.trim();
     const jobTitle = careerData.personal.jobTitle.trim();
@@ -16,27 +28,14 @@ export function ProfileOverview() {
     const initials = fullName ? fullName.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase() : "CV";
 
     const stats = [
-        {
-            label: "Experience",
-            value: careerData.experience.length,
-            icon: BriefcaseBusiness,
-        },
-        {
-            label: "Education",
-            value: careerData.education.length,
-            icon: GraduationCap,
-        },
-        {
-            label: "Skills",
-            value: careerData.skills.length,
-            icon: Wrench,
-        },
-        {
-            label: "Projects",
-            value: careerData.projects.length,
-            icon: FolderGit2,
-        },
+        { label: "Experience", value: careerData.experience.length, icon: BriefcaseBusiness },
+        { label: "Education", value: careerData.education.length, icon: GraduationCap },
+        { label: "Skills", value: careerData.skills.reduce((total, group) => total + group.skills.length, 0), icon: Wrench },
+        { label: "Projects", value: careerData.projects.length, icon: FolderGit2 },
+        { label: "Languages", value: careerData.languages.filter((item) => item.name.trim().length > 0).length, icon: Languages },
     ];
+
+    const accentClassName = getProfileAccentSwatchClassName(accentTone);
 
     return (
         <div className="space-y-5">
@@ -46,9 +45,7 @@ export function ProfileOverview() {
             </div>
 
             <div className="border border-border bg-card p-5">
-                <div className="mb-5 flex size-14 items-center justify-center rounded-full bg-primary font-display text-2xl text-primary-foreground">
-                    {initials}
-                </div>
+                <div className={cn("mb-5 flex size-14 items-center justify-center rounded-full font-display text-2xl text-[#27322D]", accentClassName)}>{initials}</div>
 
                 <h3 className="wrap-break-word text-xl font-semibold tracking-tight">{fullName || "Your Name"}</h3>
 
@@ -65,13 +62,22 @@ export function ProfileOverview() {
 
             <div className="grid grid-cols-2 gap-3">
                 {stats.map(({ label, value, icon: Icon }) => (
-                    <div key={label} className="border border-border bg-card p-4">
+                    <div key={label} className="border border-border bg-card p-4 last:col-span-2">
                         <Icon className="mb-4 size-4 text-muted-foreground" />
 
                         <p className="font-display text-3xl leading-none">{value}</p>
                         <p className="mt-2 text-xs text-muted-foreground">{label}</p>
                     </div>
                 ))}
+            </div>
+
+            <div className="border border-border bg-card p-5">
+                <div className="mb-5">
+                    <h3 className="text-xs font-bold uppercase tracking-[0.08em]">Profile Completion</h3>
+                    <p className="mt-1 text-xs text-muted-foreground">See which sections you've already filled in.</p>
+                </div>
+
+                <ProfileCompletion result={completion} showDetails />
             </div>
 
             <div className="border-t border-border pt-4">

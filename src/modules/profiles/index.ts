@@ -5,4 +5,6 @@ export { useProfilesStore } from "./model/profiles.store";
 
 export type { Profile, ProfileSummary, ProfileDraft } from "./model/profile.types";
 
+export { pickProfileAccentTone, resolveProfileAccentTone, type ProfileAccentTone } from "./model/profile.accent";
+
 export { DeleteProfileDialog } from "./ui/list/DeleteProfileDialog";

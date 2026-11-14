@@ -12,6 +12,7 @@ import { useUnsavedChangesGuard } from "@/shared/hooks/useUnsavedChangesGuard";
 
 import type { ProfileDraft } from "../../model/profile.types";
 import { profileFormSchema } from "../../model/profile.schema";
+import type { ProfileAccentTone } from "../../model/profile.accent";
 
 import { ProfileEditorNavigation, type ProfileEditorPanel } from "../editor/ProfileEditorNavigation";
 import { ProfileDetailsPanel } from "../editor/ProfileDetailsPanel";
@@ -19,11 +20,12 @@ import { ProfileOverview } from "../editor/ProfileOverview";
 
 interface ProfileEditorFormProps {
     initialValues?: ProfileDraft;
+    accentTone: ProfileAccentTone;
     onSave: (data: ProfileDraft) => void;
     onCancel: () => void;
 };
 
-export function ProfileEditorForm({ initialValues, onSave, onCancel }: ProfileEditorFormProps) {
+export function ProfileEditorForm({ initialValues, accentTone, onSave, onCancel }: ProfileEditorFormProps) {
     const isEditing = initialValues !== undefined;
 
     const [activePanel, setActivePanel] = useState<ProfileEditorPanel>("details");
@@ -134,7 +136,7 @@ export function ProfileEditorForm({ initialValues, onSave, onCancel }: ProfileEd
                                 onSelect={setActivePanel}
                             />
                         }
-                        rightPanel={<ProfileOverview />}
+                        rightPanel={<ProfileOverview accentTone={accentTone} />}
                     >
                         {activePanel === "details" && (
                             <ProfileDetailsPanel />

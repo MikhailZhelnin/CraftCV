@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { ProfileEditorForm, useProfilesStore, type ProfileDraft } from "@/modules/profiles";
+
+import { pickProfileAccentTone, resolveProfileAccentTone, type ProfileAccentTone } from "@/modules/profiles";
 
 export function ProfileEditorPage() {
     const navigate = useNavigate();
@@ -9,6 +12,10 @@ export function ProfileEditorPage() {
     const profile = useProfilesStore((state) => id ? state.profiles.find((item) => item.id === id) : undefined);
     const createProfile = useProfilesStore((state) => state.createProfile);
     const updateProfile = useProfilesStore((state) => state.updateProfile);
+
+    const [newProfileAccentTone] = useState<ProfileAccentTone>(() => pickProfileAccentTone(crypto.randomUUID()));
+
+    const accentTone = profile ? resolveProfileAccentTone(profile) : newProfileAccentTone;
 
     if (id && !profile) {
         return (
@@ -23,7 +30,7 @@ export function ProfileEditorPage() {
         if (id) {
             updateProfile(id, data);
         } else {
-            createProfile(data);
+            createProfile(data, newProfileAccentTone);
         };
     };
 
@@ -31,6 +38,7 @@ export function ProfileEditorPage() {
         <div className="h-full min-h-0">
             <ProfileEditorForm
                 key={id ?? "new"}
+                accentTone={accentTone}
                 initialValues={
                     profile
                         ? {

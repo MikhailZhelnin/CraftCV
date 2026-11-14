@@ -1,11 +1,11 @@
 import { CollectionCreateCard } from "@/shared/components/CollectionCreateCard";
 
-import type { ProfileSummary } from "../../model/profile.types";
+import type { Profile } from "../../model/profile.types";
 
 import { ProfileCard } from "./ProfileCard";
 
 interface ProfileListProps {
-    profiles: ProfileSummary[];
+    profiles: Profile[];
     onEdit: (id: string) => void;
     onDelete: (id: string) => void;
     onCreateNew: () => void;

@@ -1,6 +1,6 @@
-export type { Experience, PersonalDetails, Project, SpokenLanguage, LanguageLevel, LANGUAGE_LEVELS, CareerData } from "./model/career.types";
+export type { Experience, PersonalDetails, Project, SpokenLanguage, LanguageLevel, LANGUAGE_LEVELS, CareerData, SkillGroup } from "./model/career.types";
 
-export { createEmptyExperience, createEmptyCareerData, createEmptyEducation, createEmptyProject, createEmptyLanguage } from "./model/career.defaults";
+export { createEmptyExperience, createEmptyCareerData, createEmptyEducation, createEmptyProject, createEmptyLanguage, createEmptySkillGroup } from "./model/career.defaults";
 export { careerDataSchema } from "./model/career.schema";
 
 export { CAREER_SECTION_IDS, CAREER_SECTION_LABELS, type CareerSectionId } from "./model/career.sections";
