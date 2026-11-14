@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
+import { ThemeToggle } from "./ThemeToggle";
+
 const NAV_LINKS = [
     { to: "/", label: "Resumes", end: true },
     { to: "/profiles", label: "Profiles", end: false },
@@ -78,6 +80,8 @@ const AppHeader = () => {
                         />
                     </nav>
                 </div>
+
+                <ThemeToggle />
             </div>
         </header>
     );
