@@ -8,7 +8,7 @@ export function ResumeDialogArtwork({ templateId }: ResumeDialogArtworkProps) {
     const isModern = templateId === "modern";
 
     return (
-        <div aria-hidden="true" className="hidden min-h-0 flex-col items-center justify-center gap-6 overflow-hidden border-r border-border bg-[#ECEBE6] p-7 md:flex">
+        <div aria-hidden="true" className="hidden min-h-0 flex-col items-center justify-center gap-6 overflow-hidden border-r border-border bg-[#ECEBE6] dark:bg-[#292C27] p-7 md:flex">
             <span className="self-start text-[10px] font-semibold tracking-[0.12em] text-muted-foreground">CVENZA / DOCUMENT STUDIO</span>
 
             <div className="flex flex-1 items-center justify-center">
@@ -52,9 +52,7 @@ export function ResumeDialogArtwork({ templateId }: ResumeDialogArtworkProps) {
                     In print.
                 </p>
 
-                <span className="mt-2 block text-[10px] text-muted-foreground">
-                    MAKE YOUR NEXT MOVE ↗
-                </span>
+                <span className="mt-2 block text-[10px] text-muted-foreground">MAKE YOUR NEXT MOVE ↗</span>
             </div>
         </div>
     );
