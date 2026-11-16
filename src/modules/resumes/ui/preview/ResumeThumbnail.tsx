@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { Resume } from "../../model/resume.types";
+
 import { ResumeDocumentTemplate } from "./ResumeDocumentTemplate";
 
 const PAPER_WIDTH = 794;
@@ -47,7 +48,7 @@ export function ResumeThumbnail({ resume }: ResumeThumbnailProps) {
                 className="pointer-events-none absolute inset-0 flex items-center justify-center"
             >
                 <div
-                    className="shrink-0 bg-white text-left shadow-sm ring-1 ring-black/5"
+                    className="shrink-0 overflow-hidden bg-white text-left shadow-sm ring-1 ring-black/5"
                     style={{
                         width: PAPER_WIDTH,
                         height: PAPER_HEIGHT,
