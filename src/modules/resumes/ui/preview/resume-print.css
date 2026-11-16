@@ -70,4 +70,119 @@
     .cv-document a {
         text-decoration: underline;
     }
+
+    .cv-olive .olive-panel {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .cv-olive .cv-section-keep-together {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .cv-outline .cv-outline-card {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .cv-outline .cv-outline-compact {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .cv-outline .cv-section:not(.cv-outline-compact) {
+        break-inside: auto;
+    }
+
+    .cv-outline .cv-section-heading {
+        break-after: avoid-page;
+        page-break-after: avoid;
+    }
+
+    .cv-ledger .cv-ledger-compact {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .cv-nordic .cv-nordic-compact {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .cv-document.cv-modular {
+        page: modular;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .cv-modular .cv-modular-entry {
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+
+    .cv-modular .cv-modular-hero,
+    .cv-modular .cv-modular-compact {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .cv-modular .cv-section:not(.cv-modular-compact) {
+        break-inside: auto;
+    }
+
+    .cv-kinetic .cv-kinetic-hero,
+    .cv-kinetic .cv-kinetic-compact {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .cv-kinetic .cv-kinetic-entry {
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+
+    .cv-kinetic .cv-kinetic-entry-head {
+        break-inside: avoid-page;
+        break-after: avoid-page;
+    }
+
+    .cv-gridline {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .cv-gridline .cv-gridline-hero,
+    .cv-gridline .cv-gridline-compact {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+    }
+
+    .cv-gridline .cv-gridline-content {
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+
+    .cv-gridline .cv-gridline-entry {
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+
+    .cv-gridline .cv-gridline-entry-title {
+        break-inside: avoid-page;
+        break-after: avoid-page;
+    }
+
+    .cv-gridline .cv-gridline-entry-head {
+        display: table-header-group;
+    }
+
+    .cv-gridline .cv-gridline-entry-head tr {
+    break-inside: avoid-page;
+}
+}
+
+@page modular {
+    size: A4 portrait;
+    margin: 12.7mm;
 }
